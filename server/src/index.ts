@@ -1,13 +1,43 @@
 import dotenv from 'dotenv';
 import LoadBalancer from './loadbalancer';
 import ApiServer from './apiserver';
+import CounterServer from './counterserver';
+
+// Declare the ENV vars we plan to use some intellisense + types
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      NODE_ENV: 'development' | 'production';
+      ROOT_URL: string;
+      API1_PORT: string;
+      API2_PORT: string;
+      LOAD_BALANCE_PORT: string;
+      COUNTER_PORT: string;
+    }
+  }
+}
 
 // Config for env variables
 dotenv.config();
 
-// Create our load balancer
-new LoadBalancer(process.env.LOAD_BALANCE_PORT as string);
+const rootURL = process.env.ROOT_URL;
+const API1_PORT = process.env.API1_PORT;
+const API2_PORT = process.env.API2_PORT;
+const LOAD_BALANCE_PORT = process.env.LOAD_BALANCE_PORT;
+const COUNTER_PORT = process.env.COUNTER_PORT;
 
-// Create some of our api servers
-new ApiServer(process.env.SERVER1_PORT as string);
-new ApiServer(process.env.SERVER2_PORT as string);
+// List of servers we plan to boot to pass to load balancer
+const servers = [`${rootURL}:${API1_PORT}`, `${rootURL}:${API1_PORT}`];
+
+// Make sure all our env vars set properly
+if (API1_PORT && API2_PORT && LOAD_BALANCE_PORT && COUNTER_PORT) {
+  // Create our load balancer
+  new LoadBalancer(LOAD_BALANCE_PORT, servers);
+
+  // Create our counter server
+  new CounterServer(COUNTER_PORT);
+
+  // Create some of our api servers
+  new ApiServer(API1_PORT);
+  new ApiServer(API2_PORT);
+}

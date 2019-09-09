@@ -4,9 +4,9 @@ import request from 'request';
 import * as http from 'http';
 
 export default class LoadBalancer {
-  constructor(PORT: string) {
+  constructor(PORT: string, serverList: string[]) {
     // List the servers we plan to use
-    const servers = ['http://localhost:3002', 'http://localhost:3003'];
+    const servers = serverList;
 
     // Count for what server to pipe messages to
     let cur = 0;
