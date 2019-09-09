@@ -12,7 +12,5 @@ server/build
 client/build
 
 # misc
-server/.env
-server/.env.local
-client/.env
-client/.env.local
+.env
+.env.local
