@@ -1,0 +1,18 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+server/node_modules
+client/node_modules
+
+# testing
+/coverage
+
+# production
+server/build
+client/build
+
+# misc
+server/.env
+server/.env.local
+client/.env
+client/.env.local
