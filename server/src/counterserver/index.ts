@@ -16,14 +16,5 @@ export default class CounterServer {
     // Server setup
     app.disable('x-powered-by');
     app.use(cors());
-
-    // Log the routes
-    app.use((req: Request, res: Response, next: NextFunction) => {
-      console.log(`
-      Counter Server on port ${PORT} handled request for new counter
-      @ ${new Date().toString()} 
-      To Api Server on port ${req.socket.remotePort}`);
-      next();
-    });
   }
 }

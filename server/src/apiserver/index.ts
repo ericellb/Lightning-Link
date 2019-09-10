@@ -2,28 +2,35 @@ import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import * as http from 'http';
+import { rateLimit } from '../ratelimiter';
+import request from 'request';
 
 export default class ApiServer {
   constructor(PORT: string) {
     let app = express();
     let server = http.createServer(app);
 
-    // Server listen on Port
-    server.listen(PORT, function() {
-      console.log(`API Listening on ${PORT}`);
-    });
-
     // Server setup
     app.disable('x-powered-by');
     app.use(cors());
+    app.use(rateLimit);
 
-    // Log the routes
-    app.use((req: Request, res: Response, next: NextFunction) => {
-      console.log(`
-      API on port ${PORT} handled request 
-      @ ${new Date().toString()} 
-      To route ${req.originalUrl}`);
-      next();
+    // Some test routes (TEMP)
+    app.get('/:shortURL', function(req: Request, res: Response) {
+      const { shortURL } = req.params;
+      if (shortURL === '0000000') res.redirect('http://google.com');
+      else res.status(404).send('Invalid Short URL');
     });
+
+    app.post('/shorten', function(req: Request, res: Response) {
+      const { url } = req.query;
+      if (url === 'http://google.com') res.send('0000000');
+    });
+
+    app.use(function(req, res, next) {
+      res.status(404).send('Route not found');
+    });
+
+    return app;
   }
 }
