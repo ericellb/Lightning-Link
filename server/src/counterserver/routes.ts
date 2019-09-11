@@ -6,25 +6,19 @@ import { MysqlError } from 'mysql';
 export let router = express.Router();
 
 // Route to get original url given short url
-router.get('count', async (req: Request, res: Response) => {
+router.get('/count', async (req: Request, res: Response) => {
   const { serverPort } = req.query;
   if (!serverPort) {
-    res.status(400).send('Must provide a short url');
+    res.status(400).send('Must provide a server port / id');
   } else {
-    const longUrl = getCount(serverPort);
+    const startCount = await getCount(serverPort);
+    res.status(200).send(startCount);
   }
 });
-
 // Will return the current count of given server
 // If server does not have a count / exceeded their current count
 // Will create a new count range for them
-export const getCount = (serverPort: string) => {
-  // Query DB for current non exhausted count
-  let res = sql.query(`SELECT * from counters WHERE serverId=${sql.escape(serverPort)} AND exhausted='0'`);
-  // If all counts exhausted create a new one
-
-  // Return the current count
-};
+export const getCount = async (serverPort: string) => {};
 
 // DB SCHEMA FOR Counter Table
 // id - serverId - start_count - current_count - exhausted

@@ -2,6 +2,7 @@ import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import * as http from 'http';
+import { router as counterRoute } from './routes';
 
 export default class CounterServer {
   constructor(PORT: string) {
@@ -16,5 +17,10 @@ export default class CounterServer {
     // Server setup
     app.disable('x-powered-by');
     app.use(cors());
+
+    // Setup route
+    app.use(counterRoute);
+
+    return server;
   }
 }

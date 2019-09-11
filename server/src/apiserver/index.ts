@@ -32,7 +32,7 @@ export default class ApiServer {
 
     // Server listen on Port
     server.listen(PORT, function() {
-      console.log(`Counter Server Listening on ${PORT}`);
+      console.log(`API Server Listening on ${PORT}`);
     });
 
     return app;

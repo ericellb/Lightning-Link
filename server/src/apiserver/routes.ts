@@ -6,7 +6,7 @@ import { MysqlError } from 'mysql';
 export let router = express.Router();
 
 // Route to get a short url given a original url
-router.post('url', async (req: Request, res: Response) => {
+router.post('/url', async (req: Request, res: Response) => {
   const { longUrl } = req.query;
   if (!longUrl) {
     res.status(400).send('Must provide a long url');
@@ -16,7 +16,7 @@ router.post('url', async (req: Request, res: Response) => {
 });
 
 // Route to get original url given short url
-router.get('url', async (req: Request, res: Response) => {
+router.get('/url', async (req: Request, res: Response) => {
   const { shortUrl } = req.query;
   if (!shortUrl) {
     res.status(400).send('Must provide a short url');
