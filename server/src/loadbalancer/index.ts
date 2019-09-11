@@ -27,5 +27,7 @@ export default class LoadBalancer {
     server.listen(PORT, function() {
       console.log(`Load balancer Listening on ${PORT}`);
     });
+
+    return server;
   }
 }

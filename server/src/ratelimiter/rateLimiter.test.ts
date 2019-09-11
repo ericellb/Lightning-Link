@@ -1,9 +1,8 @@
 import request from 'supertest';
-import { Request, Response } from 'express';
 import ApiServer from '../apiserver';
 
 // Setup our api
-const api = new ApiServer('3001');
+const api = new ApiServer('3005');
 
 describe('Tests our Rate Limiter', () => {
   test('should rate limit after 5 bad requests', done => {

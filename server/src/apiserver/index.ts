@@ -31,6 +31,11 @@ export default class ApiServer {
       res.status(404).send('Route not found');
     });
 
+    // Server listen on Port
+    server.listen(PORT, function() {
+      console.log(`Counter Server Listening on ${PORT}`);
+    });
+
     return app;
   }
 }
