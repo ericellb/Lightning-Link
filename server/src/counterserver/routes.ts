@@ -29,12 +29,13 @@ export const getCount = async (serverPort: string) => {
   // If no rows for our serverId or all counts for serverId exhausted create a new one
   rows = await sql.query(`SELECT * FROM counters ORDER BY id DESC LIMIT 1`);
   const lastId = rows[0].id + 1;
-  rows = await sql.query(
+  let startCount = lastId * 1000000;
+  await sql.query(
     `INSERT INTO counters (server_id, start_count, current_count, exhausted) VALUES (${sql.escape(
       serverPort
-    )}, ${lastId * 1000000}, '0', '0')`
+    )}, ${startCount}, '0', '0')`
   );
-  return { startCount: rows.start_count, currentCount: rows.current_count };
+  return { startCount: startCount, currentCount: 0 };
 };
 
 // DB SCHEMA FOR Counter Table
