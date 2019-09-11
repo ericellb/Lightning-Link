@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import * as http from 'http';
 import { rateLimit } from '../ratelimiter';
-import request from 'request';
 
 export default class ApiServer {
   constructor(PORT: string) {

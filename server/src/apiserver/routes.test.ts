@@ -1,5 +1,5 @@
 import request from 'supertest';
-import ApiServer from '../apiserver';
+import ApiServer from '.';
 
 // Setup our api
 const api = new ApiServer('3000');
