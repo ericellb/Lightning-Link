@@ -25,6 +25,7 @@ const API1_PORT = process.env.API1_PORT;
 const API2_PORT = process.env.API2_PORT;
 const LOAD_BALANCE_PORT = process.env.LOAD_BALANCE_PORT;
 const COUNTER_PORT = process.env.COUNTER_PORT;
+const COUNTER_URL = `${rootURL}/${COUNTER_PORT}`;
 
 // List of servers we plan to boot to pass to load balancer
 const servers = [`${rootURL}:${API1_PORT}`, `${rootURL}:${API1_PORT}`];
@@ -38,6 +39,6 @@ if (API1_PORT && API2_PORT && LOAD_BALANCE_PORT && COUNTER_PORT) {
   new CounterServer(COUNTER_PORT);
 
   // Create some of our api servers
-  new ApiServer(API1_PORT);
-  new ApiServer(API2_PORT);
+  new ApiServer(COUNTER_URL, API1_PORT);
+  new ApiServer(COUNTER_URL, API2_PORT);
 }
