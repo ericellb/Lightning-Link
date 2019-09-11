@@ -35,7 +35,8 @@ export default class ApiServer {
     // Get count from counter server
     request(`http://localhost:3002/count?serverPort=3004`, (err, res, body) => {
       let counts = JSON.parse(body);
-      app.set('count', counts.currentCount);
+      app.set('startCount', counts.startCount);
+      app.set('currentCount', counts.currentCount);
     });
 
     return app;
