@@ -16,6 +16,17 @@ router.get('/count', async (req: Request, res: Response) => {
   }
 });
 
+// Route to update the current count of a server (identified by server port for now)
+router.post('/count', async (req: Request, res: Response) => {
+  const { serverPort, count } = req.query;
+  if (!serverPort) {
+    res.status(400).send('Must provide a server port / id');
+  } else {
+    updateCount(serverPort, count);
+    res.status(200).send('OK');
+  }
+});
+
 router.get('/newcount', async (req: Request, res: Response) => {
   const { serverPort } = req.query;
   if (!serverPort) {
@@ -43,7 +54,7 @@ export const getCount = async (serverPort: string) => {
 export const newCount = async (serverPort: string) => {
   // If no rows for our serverId or all counts for serverId exhausted create a new one
   let rows: any = await sql.query(`SELECT * FROM counters ORDER BY id DESC LIMIT 1`);
-  let lastId = 0;
+  let lastId = 1;
   // Check if there is anything returned
   if (rows[0]) {
     lastId = rows[0].id + 1;
@@ -55,4 +66,13 @@ export const newCount = async (serverPort: string) => {
     )}, ${startCount}, '0', '0')`
   );
   return { startCount: startCount, currentCount: 0 };
+};
+
+// Updates a given count for server port
+export const updateCount = (serverPort: string, count: number) => {
+  sql.query(
+    `UPDATE counters set current_count = ${sql.escape(count)} WHERE server_id = ${sql.escape(
+      serverPort
+    )} AND exhausted='0'`
+  );
 };
