@@ -52,6 +52,8 @@ export const getCount = async (serverPort: string) => {
 
 // Gets a new count range
 export const newCount = async (serverPort: string) => {
+  // Set last row for given serverPort to exhausted
+  await sql.query(`UPDATE counters set exhausted='1' WHERE server_id=${sql.escape(serverPort)}`);
   // If no rows for our serverId or all counts for serverId exhausted create a new one
   let rows: any = await sql.query(`SELECT * FROM counters ORDER BY id DESC LIMIT 1`);
   let lastId = 1;

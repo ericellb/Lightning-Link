@@ -55,14 +55,15 @@ export const getOriginalURL = async (slug: string): Promise<string | null> => {
 // Updates local count, and count on server (DB)
 const updateCount = async (req: Request) => {
   // Increment local counter
-  let count = req.app.get('currentCount');
-  let endCount = req.app.get('startCount') + 1000000;
-  req.app.set('currentCount', count + 1);
+  let currentCount = req.app.get('currentCount');
+  let count = req.app.get('startCount') + currentCount + 1;
+  let endCount = req.app.get('startCount') + 10;
+  req.app.set('currentCount', currentCount + 1);
   let counterURL = req.app.get('counterURL');
   let port = req.app.get('port');
 
   // Let counter server know we incremented (will insert to DB)
-  request.post(`${counterURL}/count?serverPort=${port}&count=${count + 1}`);
+  request.post(`${counterURL}/count?serverPort=${port}&count=${currentCount + 1}`);
 
   // If we exceeded our count range ask server for new range!
   if (count >= endCount) {
