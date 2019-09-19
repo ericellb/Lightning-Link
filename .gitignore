@@ -6,6 +6,7 @@ client/node_modules
 
 # testing
 /coverage
+/notes
 
 # production
 server/build
