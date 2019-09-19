@@ -4,9 +4,10 @@
 
 Goal of the project is to design a highly scalable URL shortener that does not have collisions when generating a new url. The n number of API servers sit behind a Load Balancer, as many API Servers can be booted as needed. Load balancing occurs in a round robin format. There are plans to provide analytics on each of the links
 
-Feature List
+Implemented Features
 
-- [ ] Finish Scalable Backend
-- [ ] Frontend Basics for Shortening URLS
-- [ ] Backend Analytics
-- [ ] Frontend Analytics viewing
+- [x] Basic Scalable URL Shortener
+
+Planned Features
+
+- [ ] Backend Analytics (See clicks, geographic data etc..)
