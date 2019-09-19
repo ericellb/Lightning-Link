@@ -43,7 +43,11 @@ export const getCount = async (serverPort: string) => {
 export const newCount = async (serverPort: string) => {
   // If no rows for our serverId or all counts for serverId exhausted create a new one
   let rows: any = await sql.query(`SELECT * FROM counters ORDER BY id DESC LIMIT 1`);
-  const lastId = rows[0].id + 1;
+  let lastId = 0;
+  // Check if there is anything returned
+  if (rows[0]) {
+    lastId = rows[0].id + 1;
+  }
   let startCount = lastId * 1000000;
   await sql.query(
     `INSERT INTO counters (server_id, start_count, current_count, exhausted) VALUES (${sql.escape(
