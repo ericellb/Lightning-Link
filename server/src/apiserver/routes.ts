@@ -19,7 +19,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
 // Route to get a short url given a original url
 router.post('/shorten', async (req: Request, res: Response) => {
-  let count = req.app.get('currentCount');
+  let count = req.app.get('startCount') + req.app.get('currentCount');
   const { destination } = req.query;
   if (destination) {
     // Create slug based on count

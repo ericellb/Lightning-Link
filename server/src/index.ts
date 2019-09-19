@@ -28,7 +28,7 @@ const COUNTER_PORT = process.env.COUNTER_PORT;
 const COUNTER_URL = `${rootURL}:${COUNTER_PORT}`;
 
 // List of servers we plan to boot to pass to load balancer
-const servers = [`${rootURL}:${API1_PORT}`, `${rootURL}:${API1_PORT}`];
+const servers = [`${rootURL}:${API1_PORT}`, `${rootURL}:${API2_PORT}`];
 
 // Make sure all our env vars set properly
 if (API1_PORT && API2_PORT && LOAD_BALANCE_PORT && COUNTER_PORT) {
