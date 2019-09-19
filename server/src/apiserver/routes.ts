@@ -67,7 +67,11 @@ const updateCount = async (req: Request) => {
 
   // If we exceeded our count range ask server for new range!
   if (count >= endCount) {
-    let response = await request(`${counterURL}/count?serverPort=${port}`);
+    request(`${counterURL}/newcount?serverPort=${port}`, (err, res, body) => {
+      let counts = JSON.parse(body);
+      req.app.set('startCount', counts.startCount);
+      req.app.set('currentCount', counts.currentCount);
+    });
   }
 };
 
