@@ -1,6 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { connection as sql } from '../db';
+import request from 'request';
 import { MysqlError } from 'mysql';
 
 export let router = express.Router();
@@ -18,13 +19,12 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
 // Route to get a short url given a original url
 router.post('/shorten', async (req: Request, res: Response) => {
-  let count = req.app.get('count');
+  let count = req.app.get('currentCount');
   const { destination } = req.query;
   if (destination) {
     // Create slug based on count
-    console.log(req.app.get('count'));
     const slug = getShortURL(count, destination);
-    req.app.set('count', count + 1);
+    updateCount(req);
     res.send(slug);
   } else {
     res.status(400).send('Must provide a long url');
@@ -50,6 +50,25 @@ export const getOriginalURL = async (slug: string): Promise<string | null> => {
   }
   // If no destination url for given short url return null
   return null;
+};
+
+// Updates local count, and count on server (DB)
+const updateCount = async (req: Request) => {
+  console.log('update');
+  // Increment local counter
+  let count = req.app.get('currentCount');
+  let endCount = req.app.get('startCount') + 1000000;
+  req.app.set('currentCount', count + 1);
+  let counterURL = req.app.get('counterURL');
+  let port = req.app.get('port');
+
+  // Let counter server know we incremented (will insert to DB)
+  request(`${counterURL}/count?serverPort=${port}`);
+
+  // If we exceeded our count range ask server for new range!
+  if (count >= endCount) {
+    let response = await request(`${counterURL}/count?serverPort=${port}`);
+  }
 };
 
 // Convert count from base 10 to base 62
