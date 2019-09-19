@@ -57,7 +57,7 @@ const updateCount = async (req: Request) => {
   // Increment local counter
   let currentCount = req.app.get('currentCount');
   let count = req.app.get('startCount') + currentCount + 1;
-  let endCount = req.app.get('startCount') + 10;
+  let endCount = req.app.get('startCount') + 1000000;
   req.app.set('currentCount', currentCount + 1);
   let counterURL = req.app.get('counterURL');
   let port = req.app.get('port');
