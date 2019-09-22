@@ -25,7 +25,7 @@ export const rateLimit = (req: Request, res: Response, next: NextFunction) => {
 
   // Delete all requests more than 60 seconds old
   if (isLimited(newRequest.ip)) {
-    res.send('Rate limited, please slow down!');
+    res.status(429).send('Rate limited, please slow down!');
   } else {
     next();
   }
