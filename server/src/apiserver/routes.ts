@@ -12,8 +12,15 @@ router.get('/:slug', async (req: Request, res: Response) => {
   if (!slug) {
     res.status(400).send('Must provide a short url');
   } else {
-    const destination = await getOriginalURL(slug);
-    res.send(destination);
+    let destination = await getOriginalURL(slug);
+    if (destination) {
+      var urlTest = new RegExp('^(http|https)://');
+      if (urlTest.test(destination)) {
+      } else {
+        destination = 'http://' + destination;
+      }
+      res.redirect(destination);
+    }
   }
 });
 
