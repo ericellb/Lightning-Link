@@ -2,7 +2,18 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { connection as sql } from '../db';
 import request from 'request';
-import { MysqlError } from 'mysql';
+import bluebird from 'bluebird';
+import redis from 'redis';
+
+// Open redis client
+let REDIS_URL_EXPIRE = 600 * 1000; // 10 minutes
+let REDIS_IP = '127.0.0.1';
+let REDIS_PORT = 6379;
+const oldRedisClient = redis.createClient(REDIS_PORT, REDIS_IP);
+const redisClient: any = bluebird.promisifyAll(oldRedisClient) as redis.RedisClient;
+redisClient.on('error', () => {
+  console.log('couldnt connect to redis server');
+});
 
 export let router = express.Router();
 
@@ -15,11 +26,12 @@ router.get('/:slug', async (req: Request, res: Response) => {
     let destination = await getOriginalURL(slug);
     if (destination) {
       var urlTest = new RegExp('^(http|https)://');
-      if (urlTest.test(destination)) {
-      } else {
+      if (!urlTest.test(destination)) {
         destination = 'http://' + destination;
       }
       res.send(destination);
+    } else {
+      res.status(404).send('ShortURL not found!');
     }
   }
 });
@@ -29,10 +41,16 @@ router.post('/shorten', async (req: Request, res: Response) => {
   let count = req.app.get('startCount') + req.app.get('currentCount');
   const { destination } = req.query;
   if (destination) {
-    // Create slug based on count
-    const slug = getShortURL(count, destination);
-    updateCount(req);
-    res.send(slug);
+    // Check redis store for URL first (prevent some duplicates while still low response time)
+    let cachedSlug = await redisClient.getAsync(destination);
+    if (cachedSlug) {
+      res.send(cachedSlug);
+    } else {
+      // Create slug based on count
+      const slug = getShortURL(count, destination);
+      updateCount(req);
+      res.send(slug);
+    }
   } else {
     res.status(400).send('Must provide a long url');
   }
@@ -44,6 +62,7 @@ export const getShortURL = (count: number, destination: string): string => {
   const slug = base62(count);
   // Store slug and destination in our database
   sql.query(`INSERT INTO urls (slug, destination) VALUES (${sql.escape(slug)}, ${sql.escape(destination)})`);
+  redisClient.set(destination, slug, 'EX', REDIS_URL_EXPIRE);
   // Return the slug
   return slug;
 };

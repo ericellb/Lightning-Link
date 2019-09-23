@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction, request } from 'express';
 import bluebird from 'bluebird';
 import redis from 'redis';
-import { checkServerIdentity } from 'tls';
 
 let MAX_REQUESTS = 10;
 let TIME_EXPIRE = 10000;
