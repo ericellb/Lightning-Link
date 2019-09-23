@@ -39,11 +39,14 @@ router.get('/:slug', async (req: Request, res: Response) => {
 // Route to get a short url given a original url
 router.post('/shorten', async (req: Request, res: Response) => {
   let count = req.app.get('startCount') + req.app.get('currentCount');
-  const { destination } = req.query;
+  let { destination, forcenewurl } = req.query;
+  if (forcenewurl === undefined) {
+    forcenewurl = '0';
+  }
   if (destination) {
     // Check redis store for URL first (prevent some duplicates while still low response time)
     let cachedSlug = await redisClient.getAsync(destination);
-    if (cachedSlug) {
+    if (cachedSlug && forcenewurl === '0') {
       res.send(cachedSlug);
     } else {
       // Create slug based on count
