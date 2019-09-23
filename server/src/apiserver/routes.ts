@@ -19,7 +19,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
       } else {
         destination = 'http://' + destination;
       }
-      res.redirect(destination);
+      res.send(destination);
     }
   }
 });
