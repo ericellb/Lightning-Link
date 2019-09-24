@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as http from 'http';
 import { rateLimit } from '../ratelimiter';
-import { router as urlShortner } from './routes';
+import { router as urlShortner } from './shortenRoutes';
 import request from 'request';
 
 export default class ApiServer {
