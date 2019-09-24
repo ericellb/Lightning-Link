@@ -1,15 +1,17 @@
 import request from 'supertest';
 import ApiServer from '.';
+import CounterServer from '../counterserver';
 
 // Setup our api
-const api = new ApiServer('3000');
+const counter = new CounterServer('3001');
+const api = new ApiServer('http://localhost:3001', '3002');
 
 describe('Tests the Creation / Retrieval of URLs', () => {
   it('should redirect us to a destination url for given short url', done => {
     request(api)
-      .get('/0000000')
+      .get('/0004c92')
       .then(res => {
-        expect(res.redirect).toBe(true);
+        expect(typeof res.text).toBe('string');
         done();
       });
   });
@@ -26,9 +28,9 @@ describe('Tests the Creation / Retrieval of URLs', () => {
   it('should generate a new short url given a destination url', done => {
     request(api)
       .post('/shorten')
-      .query({ url: 'http://google.com' })
+      .query({ destination: 'http://google.com' })
       .then(res => {
-        expect(res.text).toBe('0000000');
+        expect(typeof res.text).toBe('string');
         done();
       });
   });
