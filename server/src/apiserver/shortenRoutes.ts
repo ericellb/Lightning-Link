@@ -1,6 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { connection as sql } from '../db';
+import { base62, updateCount } from './utils';
 import request from 'request';
 import bluebird from 'bluebird';
 import redis from 'redis';
@@ -90,45 +91,4 @@ export const getOriginalURL = async (slug: string): Promise<string | null> => {
   }
   // If no destination url for given short url return null
   return null;
-};
-
-// Updates local count, and count on server (DB)
-const updateCount = async (req: Request) => {
-  // Increment local counter
-  let currentCount = req.app.get('currentCount');
-  let count = req.app.get('startCount') + currentCount + 1;
-  let endCount = req.app.get('startCount') + 1000000;
-  req.app.set('currentCount', currentCount + 1);
-  let counterURL = req.app.get('counterURL');
-  let port = req.app.get('port');
-
-  // Let counter server know we incremented (will insert to DB)
-  request.post(`${counterURL}/count?serverPort=${port}&count=${currentCount + 1}`);
-
-  // If we exceeded our count range ask server for new range!
-  if (count >= endCount) {
-    request(`${counterURL}/newcount?serverPort=${port}`, (err, res, body) => {
-      let counts = JSON.parse(body);
-      req.app.set('startCount', counts.startCount);
-      req.app.set('currentCount', counts.currentCount);
-    });
-  }
-};
-
-// Convert count from base 10 to base 62
-const base62 = (count: number): string => {
-  let uniqueId = '';
-  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  while (count > 0) {
-    uniqueId = chars[count % 62] + uniqueId;
-    count = Math.floor(count / 62);
-  }
-
-  // Pad with zeroes 7 chars
-  while (uniqueId.length < 7) {
-    uniqueId = 0 + uniqueId;
-  }
-
-  return uniqueId;
 };
