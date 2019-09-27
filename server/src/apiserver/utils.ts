@@ -1,6 +1,10 @@
-import { connection as sql } from '../../db';
+import { connection as sql } from '../db';
 import { Request, Response } from 'express';
 import request from 'request';
+import _ from 'lodash';
+
+// Config for env variables
+let geoKEY = process.env.GEO_API_KEY;
 
 // Returns true if user exists in DB, false if not
 export const userExists = async (userId: string) => {
@@ -64,6 +68,28 @@ export const updateCount = async (req: Request) => {
   }
 };
 
+// Inserts Analytic Data for current request for given slug
+export const setAnalyticData = async (req: Request, slug: string) => {
+  // TESTING PURPOSES
+  let requestIP = req.ip;
+  if (req.ip == '::ffff:127.0.0.1') {
+    requestIP = '66.131.255.235';
+  }
+
+  // Append ip to geo ip api url
+  let geoURL = `https://api.ipgeolocation.io/ipgeo?apiKey=${geoKEY}&ip=`;
+  geoURL += requestIP;
+
+  // Call Geolocation API
+  request(geoURL, (err, res, body) => {
+    // Get current analytics from DB for given slug
+    sql.query(`SELECT * from urls_analytics WHERE urls_slug=${sql.escape(slug)}`, (err, rows) => {
+      let worlds = formatAnalyticData(body, rows);
+      sql.query(`UPDATE urls_analytics SET visits=visits+1, worlds=${sql.escape(worlds)}`);
+    });
+  });
+};
+
 // Generates a hexdecimal 10 character string
 const generateId = () => {
   let result = '';
@@ -74,3 +100,69 @@ const generateId = () => {
   }
   return result;
 };
+
+// Formats the Analytic Data and returns as json string
+const formatAnalyticData = (body: any, rows: any) => {
+  let reqBody: geoBody = JSON.parse(body);
+  let worlds: analyticData[] = JSON.parse(rows[0].worlds);
+
+  let requestLocation = {
+    city: reqBody.city,
+    country: reqBody.country_name,
+    continent: reqBody.continent_code,
+    visits: '1'
+  };
+
+  let foundCity = false;
+
+  // If entry exists, update the visits value
+  console.log(worlds);
+  worlds.find(entry => {
+    if (entry.city === requestLocation.city) {
+      let tempVisits = parseInt(entry.visits);
+      tempVisits++;
+      entry.visits = tempVisits.toString();
+      foundCity = true;
+    }
+  });
+
+  // If entry doesnt exist, insert it
+  if (!foundCity) {
+    worlds.push(requestLocation);
+  }
+
+  console.log(worlds);
+  return JSON.stringify(worlds);
+};
+
+// Interface for geolocation response data
+interface geoBody {
+  ip: string;
+  continent_code: string;
+  country_code2: string;
+  country_code3: string;
+  country_name: string;
+  country_capital: string;
+  state_prov: string;
+  district: string;
+  city: string;
+  zipcode: string;
+  latitude: string;
+  longitude: string;
+  is_eu: boolean;
+  calling_code: string;
+  country_tld: string;
+  languages: string;
+  country_flag: string;
+  geoname_id: string;
+  isp: string;
+  connection_type: string;
+  organization: string;
+}
+
+interface analyticData {
+  city: string;
+  visits: string;
+  country: string;
+  continent: string;
+}

@@ -13,6 +13,7 @@ declare global {
       API2_PORT: string;
       LOAD_BALANCE_PORT: string;
       COUNTER_PORT: string;
+      GEO_API_KEY: string;
     }
   }
 }

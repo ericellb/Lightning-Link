@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { connection as sql } from '../db';
-import { base62, updateCount } from './utils';
+import { base62, updateCount, setAnalyticData } from './utils';
 import request from 'request';
 import bluebird from 'bluebird';
 import redis from 'redis';
@@ -24,7 +24,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
   if (!slug) {
     res.status(400).send('Must provide a short url');
   } else {
-    let destination = await getOriginalURL(slug);
+    let destination = await getOriginalURL(req, slug);
     if (destination) {
       var urlTest = new RegExp('^(http|https)://');
       if (!urlTest.test(destination)) {
@@ -40,14 +40,14 @@ router.get('/:slug', async (req: Request, res: Response) => {
 // Route to get a short url given a original url
 router.post('/shorten', async (req: Request, res: Response) => {
   let count = req.app.get('startCount') + req.app.get('currentCount');
-  let { destination, forcenewurl, userId } = req.query;
-  if (forcenewurl === undefined) {
-    forcenewurl = '0';
+  let { destination, forceNewUrl, userId } = req.query;
+  if (forceNewUrl === undefined) {
+    forceNewUrl = '0';
   }
   if (destination) {
     // Check redis store for URL first (prevent some duplicates while still low response time)
     let cachedSlug = await redisClient.getAsync(destination);
-    if (cachedSlug && forcenewurl === '0') {
+    if (cachedSlug && forceNewUrl === '0') {
       res.send(cachedSlug);
     } else {
       // Create slug based on count
@@ -73,8 +73,8 @@ export const getShortURL = (count: number, destination: string, userId: string |
   if (userId) {
     console.log(userId);
     sql.query(
-      `INSERT INTO urls_analytics (urls_slug, creator_user_id) 
-       VALUES (${sql.escape(slug)}, ${sql.escape(userId)})`
+      `INSERT INTO urls_analytics (urls_slug, creator_user_id, visits, worlds) 
+       VALUES (${sql.escape(slug)}, ${sql.escape(userId)}, 0, '[]')`
     );
   }
 
@@ -83,10 +83,14 @@ export const getShortURL = (count: number, destination: string, userId: string |
 };
 
 // Returns the original URL given a slug (shortURL)
-export const getOriginalURL = async (slug: string): Promise<string | null> => {
+export const getOriginalURL = async (req: Request, slug: string): Promise<string | null> => {
   // Query our Database for given slug
   let rows: any = await sql.query(`SELECT * FROM urls WHERE slug=${sql.escape(slug)}`);
+
+  // We found an entry
   if (rows[0]) {
+    // Fill analytics with request users IP Info
+    setAnalyticData(req, slug);
     return rows[0].destination as string;
   }
   // If no destination url for given short url return null
