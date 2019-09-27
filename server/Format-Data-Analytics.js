@@ -1,17 +1,7 @@
 var world = {
   'North America': {
-    Canada: {
-      Quebec: 5,
-      Ontario: 10
-    },
     'United States': {
-      'New York': 5,
       Florida: 10
-    }
-  },
-  Europe: {
-    'United Kingdom': {
-      Scotland: 10
     }
   }
 };
@@ -23,3 +13,20 @@ for (continent in world) {
     }
   }
 }
+
+var world = {
+  'North America': {
+    'United States': {
+      Florida: 10,
+      California: 1
+    }
+  }
+};
+
+var newWorld = {
+  'North America': {
+    'United States': {
+      California: 1
+    }
+  }
+};
