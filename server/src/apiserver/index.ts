@@ -4,6 +4,7 @@ import * as http from 'http';
 import { rateLimit } from '../ratelimiter';
 import { router as shortenRoutes } from './shortenRoutes';
 import { router as loginRoutes } from './loginRoutes';
+import { router as analyticRoutes } from './analyticRoutes';
 import request from 'request';
 
 export default class ApiServer {
@@ -20,6 +21,7 @@ export default class ApiServer {
     // Bind routes
     app.use(loginRoutes);
     app.use(shortenRoutes);
+    app.use(analyticRoutes);
 
     app.use(function(req, res, next) {
       res.status(404).send('Route not found');
