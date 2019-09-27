@@ -39,7 +39,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
 // Route to get a short url given a original url
 router.post('/shorten', async (req: Request, res: Response) => {
   let count = req.app.get('startCount') + req.app.get('currentCount');
-  let { destination, forcenewurl } = req.query;
+  let { destination, forcenewurl, userId } = req.query;
   if (forcenewurl === undefined) {
     forcenewurl = '0';
   }
@@ -50,7 +50,7 @@ router.post('/shorten', async (req: Request, res: Response) => {
       res.send(cachedSlug);
     } else {
       // Create slug based on count
-      const slug = getShortURL(count, destination);
+      const slug = getShortURL(count, destination, userId);
       updateCount(req);
       res.send(slug);
     }
@@ -60,12 +60,23 @@ router.post('/shorten', async (req: Request, res: Response) => {
 });
 
 // Returns a new slug (shortURL) for given destination URL
-export const getShortURL = (count: number, destination: string): string => {
+export const getShortURL = (count: number, destination: string, userId: string | undefined): string => {
   // Generate our slug based on counter
   const slug = base62(count);
   // Store slug and destination in our database
   sql.query(`INSERT INTO urls (slug, destination) VALUES (${sql.escape(slug)}, ${sql.escape(destination)})`);
   redisClient.set(destination, slug, 'EX', REDIS_URL_EXPIRE);
+
+  // If user id given (user logged in) attach the URL to his Userid for analytics
+  // Only creator of URL can view analytics on a url
+  if (userId) {
+    console.log(userId);
+    sql.query(
+      `INSERT INTO urls_analytics (urls_slug, creator_user_id) 
+       VALUES (${sql.escape(slug)}, ${sql.escape(userId)})`
+    );
+  }
+
   // Return the slug
   return slug;
 };
