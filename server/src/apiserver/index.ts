@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import * as http from 'http';
 import { rateLimit } from '../ratelimiter';
-import { router as urlShortner } from './shortenRoutes';
+import { router as shortenRoutes } from './shortenRoutes';
+import { router as loginRoutes } from './loginRoutes';
 import request from 'request';
 
 export default class ApiServer {
@@ -17,7 +18,8 @@ export default class ApiServer {
     app.use(rateLimit);
 
     // Bind routes
-    app.use(urlShortner);
+    app.use(loginRoutes);
+    app.use(shortenRoutes);
 
     app.use(function(req, res, next) {
       res.status(404).send('Route not found');
