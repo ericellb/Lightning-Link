@@ -7,9 +7,11 @@ Goal of the project is to design a highly scalable URL shortener that does not h
 Implemented Features
 
 - [x] Basic Scalable URL Shortener Backend
+- [x] Backend Analytics (See visits, geographic data etc..)
 
 Planned Features
 
 - [ ] Frontend for URL Shortener (Only url shortening)
-- [ ] Backend Analytics (See clicks, geographic data etc..)
 - [ ] Frontend implement analytics viewing
+
+# API Routes
