@@ -1,17 +1,19 @@
 import React from 'react';
 import { makeStyles, Container, Grid, Typography } from '@material-ui/core';
-import { Timeline, Add, LibraryAdd } from '@material-ui/icons';
+import { Timeline, Add, LibraryAdd, Language, TrackChanges } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   flex: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '2em'
+    padding: '2em'
   },
   centerText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    minHeight: '350px'
   },
   gridCard: {
+    paddingTop: '3em',
     padding: '1em',
     maxWidth: '80%'
   },
@@ -40,17 +42,17 @@ export default function Info() {
     <Container className={classes.centerText}>
       <Grid container className={classes.flex}>
         <Grid item md={4} xs={12} className={classes.gridCard}>
-          <LibraryAdd className={classes.icon}></LibraryAdd>
+          <Language className={classes.icon}></Language>
           <Typography variant="h4" className={classes.title}>
             Build relations
           </Typography>
           <Typography variant="body1" className={classes.subtitle}>
-            Create, and share persistent links with your audience. Lightning URLs are fast, short and will allow you to
+            Create, and share persistent links with your audience. Lightning URLs are fast, short and allow you to
             better engage with your audience.
           </Typography>
         </Grid>
         <Grid item md={4} xs={12} className={classes.gridCard}>
-          <Timeline className={classes.icon}></Timeline>
+          <TrackChanges className={classes.icon}></TrackChanges>
           <Typography variant="h4" className={classes.title}>
             URL Analytics
           </Typography>

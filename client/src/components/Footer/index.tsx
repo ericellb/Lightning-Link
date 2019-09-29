@@ -3,15 +3,18 @@ import { makeStyles, IconButton, Container } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   footer: {
-    position: 'relative',
-    bottom: '0',
+    position: 'sticky',
     width: '100%',
     backgroundColor: '#2b2e4a',
-    height: '8.5vh',
+    height: '64px',
     zIndex: 1000,
     color: '#FEFEFE',
-    padding: '1em',
-    boxSizing: 'border-box'
+    padding: '0.5em',
+    boxSizing: 'border-box',
+    [theme.breakpoints.up('md')]: {
+      position: 'fixed',
+      bottom: '0px'
+    }
   },
   icons: {
     fill: '#eeeeee'
