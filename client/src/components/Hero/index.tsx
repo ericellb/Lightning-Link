@@ -28,8 +28,8 @@ const useStyles = makeStyles(theme => ({
     color: '#56575b'
   },
   linkImage: {
-    height: '55vh',
-    width: '55vh',
+    height: '45vh',
+    width: '45vh',
     transform: 'rotate(135deg)',
     color: '#1b3987'
   }

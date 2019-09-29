@@ -17,7 +17,23 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: '100%'
+    width: '100%',
+    background: 'white',
+    borderRadius: '8px'
+  },
+  textFieldInput: {
+    color: 'black'
+  },
+  textFieldLabel: {
+    color: 'black'
+  },
+  notchedOutline: {
+    borderRadius: '6px',
+    borderColor: '#1b3987 !important'
+  },
+  textFieldFocus: {
+    borderRadius: '6px',
+    boxShadow: '0px 0px 4px #fff'
   },
   shortenButton: {
     backgroundColor: '#1b3987',
@@ -39,7 +55,6 @@ export default function Shortener() {
           <Grid item xs={9}>
             <TextField
               id="filled-name"
-              label="Shorten your link"
               placeholder="Your URL"
               autoComplete="off"
               className={classes.textField}
@@ -47,6 +62,16 @@ export default function Shortener() {
               onChange={e => setDestURL(e.target.value)}
               margin="normal"
               variant="outlined"
+              InputLabelProps={{
+                className: classes.textFieldLabel
+              }}
+              InputProps={{
+                classes: {
+                  input: classes.textFieldInput,
+                  notchedOutline: classes.notchedOutline,
+                  focused: classes.textFieldFocus
+                }
+              }}
             />
           </Grid>
           <Grid item xs={3}>
