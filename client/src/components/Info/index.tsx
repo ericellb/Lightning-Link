@@ -12,7 +12,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   gridCard: {
-    padding: '1em'
+    padding: '1em',
+    maxWidth: '80%'
   },
   icon: {
     height: '80px',
