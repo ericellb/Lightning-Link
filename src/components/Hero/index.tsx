@@ -20,18 +20,24 @@ const useStyles = makeStyles(theme => ({
     display: 'inline'
   },
   title: {
+    fontSize: 'calc(36px + 6 * ((100vw - 320px) / 480))',
     fontWeight: 900,
     color: '#252628'
   },
   subtitle: {
+    fontSize: 'calc(20px + 6 * ((100vw - 320px) / 480))',
     fontWeight: 400,
     color: '#56575b'
   },
   linkImage: {
-    height: '40vh',
-    width: '40vh',
+    height: '30vh',
+    width: '30vh',
     transform: 'rotate(135deg)',
-    color: '#1b3987'
+    color: '#1b3987',
+    [theme.breakpoints.up('sm')]: {
+      height: '40vh',
+      width: '40vh'
+    }
   },
   gridItem: {
     alignItems: 'center',
