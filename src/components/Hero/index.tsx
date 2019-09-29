@@ -20,24 +20,21 @@ const useStyles = makeStyles(theme => ({
     display: 'inline'
   },
   title: {
-    fontSize: 'calc(36px + 6 * ((100vw - 320px) / 480))',
+    fontSize: 'calc(28px + 6 * ((100vw - 320px) / 480))',
     fontWeight: 900,
-    color: '#252628'
+    color: '#252628',
+    marginBottom: '16px'
   },
   subtitle: {
-    fontSize: 'calc(20px + 6 * ((100vw - 320px) / 480))',
+    fontSize: 'calc(18px + 6 * ((100vw - 320px) / 480))',
     fontWeight: 400,
     color: '#56575b'
   },
   linkImage: {
-    height: '30vh',
-    width: '30vh',
+    height: 'calc(30vh + 4 * ((100vw - 520px) / 200))',
+    width: 'calc(30vh + 4 * ((100vw - 520px) / 200))',
     transform: 'rotate(135deg)',
-    color: '#1b3987',
-    [theme.breakpoints.up('sm')]: {
-      height: '40vh',
-      width: '40vh'
-    }
+    color: '#1b3987'
   },
   gridItem: {
     alignItems: 'center',
@@ -47,12 +44,15 @@ const useStyles = makeStyles(theme => ({
   item1: {
     order: 2,
     marginBottom: '2em',
+    marginTop: '1em',
     [theme.breakpoints.up('md')]: {
       marginBottom: '0em',
+      marginTop: '0em',
       order: 1
     }
   },
   item2: {
+    overflow: 'hidden',
     order: 1,
     [theme.breakpoints.up('md')]: {
       order: 2
@@ -69,10 +69,10 @@ export default function Hero() {
         <Grid item md={8} xs={12} className={classes.gridTitle + ' ' + classes.item1 + ' ' + classes.gridItem}>
           <div className={classes.flex}>
             <Typography variant="h3" className={classes.inlineText + ' ' + classes.title}>
-              Lightning Fast Short URLs
+              Lightning Fast Short URL's
             </Typography>
             <Typography variant="h4" className={classes.inlineText + ' ' + classes.subtitle}>
-              Create, share and view analytics on Short URLs
+              Create, share and view analytics of your Lightning URL
             </Typography>
           </div>
         </Grid>

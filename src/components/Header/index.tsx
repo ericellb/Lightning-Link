@@ -18,6 +18,12 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginRight: '0.3em'
+  },
+  responsiveText: {
+    fontSize: 'calc(14px + 6 * ((100vw - 320px) / 880))',
+    [theme.breakpoints.up('md')]: {
+      fontSize: '18px'
+    }
   }
 }));
 
@@ -28,11 +34,15 @@ export default function Header() {
     <AppBar position="sticky">
       <Container>
         <Toolbar>
-          <Typography variant="h6" className={classes.title + ' ' + classes.flex}>
+          <Typography variant="h6" className={classes.title + ' ' + classes.flex + ' ' + classes.responsiveText}>
             <OfflineBolt className={classes.icon} /> LTNG URL
           </Typography>
-          <Button color="inherit">Login</Button>
-          <Button color="inherit">Sign Up</Button>
+          <Button color="inherit" className={classes.responsiveText}>
+            Login
+          </Button>
+          <Button color="inherit" className={classes.responsiveText}>
+            Sign Up
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>

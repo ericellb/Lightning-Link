@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     width: '100%',
     backgroundColor: '#0b1736',
-    padding: '2em',
+    padding: '3em',
     boxSizing: 'border-box'
   },
   flex: {
@@ -63,7 +63,7 @@ export default function Shortener() {
   return (
     <div className={classes.container}>
       <Container className={classes.flex}>
-        <Grid container className={classes.flex} spacing={2}>
+        <Grid container className={classes.flex} spacing={3}>
           <Grid item md={9} xs={12} className={classes.item2}>
             <TextField
               id="filled-name"
