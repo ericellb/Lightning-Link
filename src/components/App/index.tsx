@@ -28,14 +28,13 @@ const theme = createMuiTheme({
     },
     MuiSnackbarContent: {
       root: {
-        backgroundColor: '#202225',
+        backgroundColor: '#2a5bd7',
         color: 'white'
       }
     },
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: '#3490de',
-        position: 'absolute'
+        backgroundColor: '#222831'
       }
     }
   },
