@@ -9,7 +9,7 @@ export let router = express.Router();
 router.get('/analytic/:slug', async (req: Request, res: Response) => {
   const { slug } = req.params;
   const { userId } = req.query;
-  if (userCreatedRoute(slug, userId)) {
+  if (await userCreatedRoute(slug, userId)) {
     res.send(await getAnalyticData(slug, userId));
   } else {
     res.status(401).send('Unauthorized Route');
@@ -18,8 +18,11 @@ router.get('/analytic/:slug', async (req: Request, res: Response) => {
 
 const userCreatedRoute = async (slug: string, userId: string) => {
   let rows = await getUrlAnalytic(slug, userId);
-  if (rows[0]) return true;
-  else return false;
+  if (rows[0] !== undefined) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const getAnalyticData = async (slug: string, userId: string) => {

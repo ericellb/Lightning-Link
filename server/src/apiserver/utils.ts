@@ -85,7 +85,9 @@ export const setAnalyticData = async (req: Request, slug: string) => {
     // Get current analytics from DB for given slug
     sql.query(`SELECT * from urls_analytics WHERE urls_slug=${sql.escape(slug)}`, (err, rows) => {
       let worlds = formatAnalyticData(body, rows);
-      sql.query(`UPDATE urls_analytics SET visits=visits+1, worlds=${sql.escape(worlds)}`);
+      sql.query(
+        `UPDATE urls_analytics SET visits=visits+1, worlds=${sql.escape(worlds)} WHERE urls_slug=${sql.escape(slug)}`
+      );
     });
   });
 };
@@ -116,7 +118,6 @@ const formatAnalyticData = (body: any, rows: any) => {
   let foundCity = false;
 
   // If entry exists, update the visits value
-  console.log(worlds);
   worlds.find(entry => {
     if (entry.city === requestLocation.city) {
       let tempVisits = parseInt(entry.visits);
