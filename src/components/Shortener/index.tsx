@@ -55,7 +55,7 @@ export default function Shortener() {
           <Grid item xs={9}>
             <TextField
               id="filled-name"
-              placeholder="Your URL"
+              placeholder="Shorten your link"
               autoComplete="off"
               className={classes.textField}
               value={destURL}
