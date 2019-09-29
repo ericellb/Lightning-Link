@@ -5,7 +5,8 @@ const useStyles = makeStyles(theme => ({
   container: {
     width: '100%',
     backgroundColor: '#0b1736',
-    height: '30vh'
+    padding: '2em',
+    boxSizing: 'border-box'
   },
   flex: {
     display: 'flex',
@@ -15,8 +16,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%'
   },
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
     width: '100%',
     background: 'white',
     borderRadius: '8px'
@@ -39,8 +38,21 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#1b3987',
     color: 'white',
     width: '100%',
-    height: '56px',
-    marginTop: '8px'
+    height: '56px'
+  },
+  item1: {
+    order: 2,
+    marginBottom: '2em',
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '0em',
+      order: 1
+    }
+  },
+  item2: {
+    order: 1,
+    [theme.breakpoints.up('md')]: {
+      order: 2
+    }
   }
 }));
 
@@ -51,8 +63,8 @@ export default function Shortener() {
   return (
     <div className={classes.container}>
       <Container className={classes.flex}>
-        <Grid container className={classes.flex} spacing={4}>
-          <Grid item xs={9}>
+        <Grid container className={classes.flex} spacing={2}>
+          <Grid item md={9} xs={12} className={classes.item2}>
             <TextField
               id="filled-name"
               placeholder="Shorten your link"
@@ -60,7 +72,6 @@ export default function Shortener() {
               className={classes.textField}
               value={destURL}
               onChange={e => setDestURL(e.target.value)}
-              margin="normal"
               variant="outlined"
               InputLabelProps={{
                 className: classes.textFieldLabel
@@ -74,7 +85,7 @@ export default function Shortener() {
               }}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item md={3} xs={12} className={classes.item2}>
             <Button variant="contained" className={classes.shortenButton}>
               {' '}
               Shorten{' '}
