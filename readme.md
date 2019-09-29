@@ -143,4 +143,4 @@ Returns the Analytic Data of a Short URL given your UserID is the creator
 
 Copyright Eric Ellbogen 2019
 
-- This project is under the **GNU V3** license. [Find it here](https://github.com/ericellb/Simple-URL/blob/master/readme.md).
+- This project is under the **GNU V3** license. [Find it here](https://github.com/ericellb/Simple-URL/blob/master/LICENSE).
