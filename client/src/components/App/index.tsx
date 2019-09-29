@@ -6,6 +6,7 @@ import Footer from '../Footer';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import './style.css';
+import Info from '../Info';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Header />
       <Hero />
       <Shortener />
+      <Info />
       <Footer />
     </ThemeProvider>
   );

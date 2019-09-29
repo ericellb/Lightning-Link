@@ -28,10 +28,29 @@ const useStyles = makeStyles(theme => ({
     color: '#56575b'
   },
   linkImage: {
-    height: '45vh',
-    width: '45vh',
+    height: '40vh',
+    width: '40vh',
     transform: 'rotate(135deg)',
     color: '#1b3987'
+  },
+  gridItem: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  item1: {
+    order: 2,
+    marginBottom: '2em',
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '0em',
+      order: 1
+    }
+  },
+  item2: {
+    order: 1,
+    [theme.breakpoints.up('md')]: {
+      order: 2
+    }
   }
 }));
 
@@ -41,7 +60,7 @@ export default function Hero() {
   return (
     <Container>
       <Grid container className={classes.gridContainer}>
-        <Grid item xs={8} className={classes.gridTitle}>
+        <Grid item md={8} xs={12} className={classes.gridTitle + ' ' + classes.item1 + ' ' + classes.gridItem}>
           <div className={classes.flex}>
             <Typography variant="h3" className={classes.inlineText + ' ' + classes.title}>
               Lightning Fast Short URLs
@@ -51,7 +70,7 @@ export default function Hero() {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item md={4} xs={12} className={classes.item2 + ' ' + classes.gridItem}>
           <InsertLink className={classes.linkImage}></InsertLink>
         </Grid>
       </Grid>
