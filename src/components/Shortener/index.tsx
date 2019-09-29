@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     width: '100%',
     backgroundColor: '#0b1736',
-    height: '260px'
+    height: '30vh'
   },
   flex: {
     display: 'flex',

@@ -4,7 +4,7 @@ import { InsertLink } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   gridContainer: {
-    marginTop: '4em'
+    marginTop: '0em'
   },
   flex: {
     display: 'flex',
@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
     color: '#56575b'
   },
   linkImage: {
-    height: '550px',
-    width: '550px',
+    height: '55vh',
+    width: '55vh',
     transform: 'rotate(135deg)',
-    color: '#00adb5'
+    color: '#1b3987'
   }
 }));
 
