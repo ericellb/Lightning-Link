@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/Simple-URL/static/css/main.53f43ab8.chunk.css",
-    "main.js": "/Simple-URL/static/js/main.a092be66.chunk.js",
-    "main.js.map": "/Simple-URL/static/js/main.a092be66.chunk.js.map",
-    "runtime-main.js": "/Simple-URL/static/js/runtime-main.4bdb1bbc.js",
-    "runtime-main.js.map": "/Simple-URL/static/js/runtime-main.4bdb1bbc.js.map",
-    "static/js/2.f03d3957.chunk.js": "/Simple-URL/static/js/2.f03d3957.chunk.js",
-    "static/js/2.f03d3957.chunk.js.map": "/Simple-URL/static/js/2.f03d3957.chunk.js.map",
-    "index.html": "/Simple-URL/index.html",
-    "precache-manifest.5c7433f72d359865a90456e098e7c55b.js": "/Simple-URL/precache-manifest.5c7433f72d359865a90456e098e7c55b.js",
-    "service-worker.js": "/Simple-URL/service-worker.js",
-    "static/css/main.53f43ab8.chunk.css.map": "/Simple-URL/static/css/main.53f43ab8.chunk.css.map"
+    "main.css": "/Lightning-URL/static/css/main.53f43ab8.chunk.css",
+    "main.js": "/Lightning-URL/static/js/main.b4fc45da.chunk.js",
+    "main.js.map": "/Lightning-URL/static/js/main.b4fc45da.chunk.js.map",
+    "runtime-main.js": "/Lightning-URL/static/js/runtime-main.eecd2ca8.js",
+    "runtime-main.js.map": "/Lightning-URL/static/js/runtime-main.eecd2ca8.js.map",
+    "static/js/2.65ca663c.chunk.js": "/Lightning-URL/static/js/2.65ca663c.chunk.js",
+    "static/js/2.65ca663c.chunk.js.map": "/Lightning-URL/static/js/2.65ca663c.chunk.js.map",
+    "index.html": "/Lightning-URL/index.html",
+    "precache-manifest.3d741494179e5e3b8c086da71438756b.js": "/Lightning-URL/precache-manifest.3d741494179e5e3b8c086da71438756b.js",
+    "service-worker.js": "/Lightning-URL/service-worker.js",
+    "static/css/main.53f43ab8.chunk.css.map": "/Lightning-URL/static/css/main.53f43ab8.chunk.css.map",
+    "static/media/link.b1d68677.svg": "/Lightning-URL/static/media/link.b1d68677.svg"
   }
 }
