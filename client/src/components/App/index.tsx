@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { HashRouter, Route } from 'react-router-dom';
 import Header from '../Header';
 import Hero from '../Hero';
 import Shortener from '../Shortener';
@@ -7,15 +8,45 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import './style.css';
 import Info from '../Info';
+import axios from '../AxiosClient';
+import createHashHistory from '../../history';
+import { AxiosError } from 'axios';
 
 export default function App() {
+  // Function to redirect user to their Short URL
+  function Redirect({ match }: any) {
+    useEffect(() => {
+      const getRedirectUrl = async (slug: any) => {
+        let res = null;
+        try {
+          res = await axios.get('/' + slug);
+          if (res.status === 200) {
+            window.location.replace(res.data);
+          }
+        } catch (err) {
+          if (err.response.status === 404) {
+            createHashHistory.push('/');
+          }
+        }
+      };
+
+      getRedirectUrl(match.params.slug);
+    }, []);
+    return <React.Fragment></React.Fragment>;
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      <Header />
-      <Hero />
-      <Shortener />
-      <Info />
-      <Footer />
+      <HashRouter>
+        <Route path="/" exact>
+          <Header />
+          <Hero />
+          <Shortener />
+          <Info />
+          <Footer />
+        </Route>
+        <Route path="/:slug" component={Redirect} />
+      </HashRouter>
     </ThemeProvider>
   );
 }
