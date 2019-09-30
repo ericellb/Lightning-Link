@@ -1,4 +1,4 @@
-# Simple URL
+# Lightning URL
 
 > Scalable URL Shortener written in TypeScript / Express with React frontend.
 
