@@ -35,7 +35,7 @@ export default function Header() {
       <Container>
         <Toolbar>
           <Typography variant="h6" className={classes.title + ' ' + classes.flex + ' ' + classes.responsiveText}>
-            <OfflineBolt className={classes.icon} /> LTNG URL
+            <OfflineBolt className={classes.icon} /> LTNG
           </Typography>
           <Button color="inherit" className={classes.responsiveText}>
             Login

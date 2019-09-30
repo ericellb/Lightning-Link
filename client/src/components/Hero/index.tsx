@@ -1,10 +1,12 @@
 import React from 'react';
 import { Grid, makeStyles, Container, Typography, Avatar } from '@material-ui/core';
 import { InsertLink } from '@material-ui/icons';
+import { ReactComponent as LinkIcon } from './link.svg';
 
 const useStyles = makeStyles(theme => ({
   gridContainer: {
-    marginTop: '0em'
+    marginTop: '0em',
+    padding: '2em'
   },
   flex: {
     display: 'flex',
@@ -33,8 +35,7 @@ const useStyles = makeStyles(theme => ({
   linkImage: {
     height: 'calc(30vh + 4 * ((100vw - 520px) / 200))',
     width: 'calc(30vh + 4 * ((100vw - 520px) / 200))',
-    transform: 'rotate(135deg)',
-    color: '#1b3987'
+    fill: '#0b1736'
   },
   gridItem: {
     alignItems: 'center',
@@ -77,7 +78,7 @@ export default function Hero() {
           </div>
         </Grid>
         <Grid item md={4} xs={12} className={classes.item2 + ' ' + classes.gridItem}>
-          <InsertLink className={classes.linkImage}></InsertLink>
+          <LinkIcon className={classes.linkImage} />
         </Grid>
       </Grid>
     </Container>

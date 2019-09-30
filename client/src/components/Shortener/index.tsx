@@ -86,7 +86,7 @@ export default function Shortener() {
             />
           </Grid>
           <Grid item md={3} xs={12} className={classes.item2}>
-            <Button variant="contained" className={classes.shortenButton}>
+            <Button variant="contained" color="primary" className={classes.shortenButton}>
               {' '}
               Shorten{' '}
             </Button>
