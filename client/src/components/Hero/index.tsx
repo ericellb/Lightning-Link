@@ -44,10 +44,8 @@ const useStyles = makeStyles(theme => ({
   },
   item1: {
     order: 2,
-    marginBottom: '2em',
-    marginTop: '1em',
+    marginTop: '2em',
     [theme.breakpoints.up('md')]: {
-      marginBottom: '0em',
       marginTop: '0em',
       order: 1
     }

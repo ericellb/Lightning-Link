@@ -4,7 +4,7 @@
 
 The goal of Lightning URL is to design a highly scalable URL shortener that does not have collisions when generating a new url and minimal number of database queries. The API servers sit behind a Load Balancer, as many API Servers can be booted as needed. Load balancing occurs in a round robin format. Analytic data is provided to the Creator of the short URL showing the Geo locations of visitors and total number of visits.
 
-![layout image](layout.png)
+![layout image](layout2.png)
 
 Implemented Features
 

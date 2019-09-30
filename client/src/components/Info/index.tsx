@@ -12,7 +12,8 @@ const useStyles = makeStyles(theme => ({
     minHeight: '350px'
   },
   gridCard: {
-    paddingTop: '3em',
+    paddingTop: '2em',
+    paddingBottom: '2em',
     padding: '1em',
     maxWidth: '80%'
   },
