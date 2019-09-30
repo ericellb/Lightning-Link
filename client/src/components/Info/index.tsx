@@ -5,8 +5,7 @@ import { Language, TrackChanges, OfflineBoltOutlined } from '@material-ui/icons'
 const useStyles = makeStyles(theme => ({
   flex: {
     display: 'flex',
-    justifyContent: 'center',
-    padding: '2em'
+    justifyContent: 'center'
   },
   centerText: {
     textAlign: 'center',
