@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '16px'
   },
   subtitle: {
-    fontSize: 'calc(18px + 6 * ((100vw - 320px) / 480))',
+    fontSize: 'calc(18px + 6 * ((100vw - 320px) / 680))',
     fontWeight: 400,
     color: '#56575b'
   },
@@ -71,7 +71,7 @@ export default function Hero() {
               Lightning Fast Short URL's
             </Typography>
             <Typography variant="h4" className={classes.inlineText + ' ' + classes.subtitle}>
-              Create, share and view analytics of your Lightning URL
+              Create, share, and view analytics of your Lightning URL. Get one for Free today.
             </Typography>
           </div>
         </Grid>
