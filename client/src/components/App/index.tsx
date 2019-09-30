@@ -14,7 +14,7 @@ import { AxiosError } from 'axios';
 
 export default function App() {
   // Function to redirect user to their Short URL
-  function Redirect({ match }: any) {
+  const Redirect = ({ match }: any) => {
     useEffect(() => {
       const getRedirectUrl = async (slug: any) => {
         let res = null;
@@ -33,7 +33,7 @@ export default function App() {
       getRedirectUrl(match.params.slug);
     }, []);
     return <React.Fragment></React.Fragment>;
-  }
+  };
 
   return (
     <ThemeProvider theme={theme}>
