@@ -1,6 +1,6 @@
 # Lightning Link
 
-> Scalable URL Shortener written in TypeScript / Express with React frontend. Live Version @ http://ltng.xyz/
+> Scalable URL Shortener written in TypeScript / Express with React frontend. Live Version @ http://ltng.link/
 
 The goal of Lightning Link is to design a highly scalable URL shortener that does not have collisions when generating a new url and minimal number of database queries. The API servers sit behind a Load Balancer, as many API Servers can be booted as needed. Load balancing occurs in a round robin format. Analytic data is provided to the Creator of the short URL showing the Geo locations of visitors and total number of visits.
 
