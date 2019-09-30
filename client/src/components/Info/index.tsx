@@ -50,7 +50,7 @@ export default function Info() {
             Lightning Fast
           </Typography>
           <Typography variant="body1" className={classes.subtitle}>
-            Lightning URL was build from the ground to provide super fast, collision free URL generation. We leverage
+            Lightning Link was build from the ground to provide super fast, collision free URL generation. We leverage
             technology to provide Lighting fast redirection.
           </Typography>
         </Grid>
@@ -60,7 +60,7 @@ export default function Info() {
             Build relations
           </Typography>
           <Typography variant="body1" className={classes.subtitle}>
-            Create, and share persistent links with your audience. Lightning URLs are fast and most importantly short.
+            Create, and share persistent links with your audience. Lightning Links are fast and most importantly short.
             They allow you to better engage with your audience.
           </Typography>
         </Grid>
@@ -70,7 +70,7 @@ export default function Info() {
             View Analytics
           </Typography>
           <Typography variant="body1" className={classes.subtitle}>
-            Monitor and view traffic analytics you are driving to your Lightning URLs. Easily be able to view
+            Monitor and view traffic analytics you are driving to your Lightning Links. Easily be able to view
             Geographical data on your users and number of visits.
           </Typography>
         </Grid>

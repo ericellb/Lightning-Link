@@ -68,10 +68,10 @@ export default function Hero() {
         <Grid item md={8} xs={12} className={classes.gridTitle + ' ' + classes.item1 + ' ' + classes.gridItem}>
           <div className={classes.flex}>
             <Typography variant="h3" className={classes.inlineText + ' ' + classes.title}>
-              Lightning Fast Short URL's
+              Lightning Fast Short Links
             </Typography>
             <Typography variant="h4" className={classes.inlineText + ' ' + classes.subtitle}>
-              Create, share, and view analytics of your Lightning URL. Get one for Free today.
+              Create, share, and view analytics of your Lightning Link. Get one for Free today.
             </Typography>
           </div>
         </Grid>

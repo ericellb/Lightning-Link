@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     color: '#FEFEFE',
     padding: '0.5em',
     boxSizing: 'border-box',
+    fontFamily: 'Roboto',
     [theme.breakpoints.up('md')]: {
       position: 'fixed',
       bottom: '0px'
@@ -22,8 +23,7 @@ const useStyles = makeStyles(theme => ({
   flex: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    fontWeight: 900
+    justifyContent: 'space-between'
   }
 }));
 
@@ -37,7 +37,7 @@ export default function Footer() {
   return (
     <footer className={classes.footer}>
       <Container className={classes.flex}>
-        <div>Created by Eric Ellb - 2019</div>
+        <div>Lightning Link - 2019</div>
         <div>
           <IconButton onClick={() => handleLink('https://github.com/ericellb/Lightning-URL')}>
             <svg

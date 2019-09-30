@@ -44,17 +44,17 @@ const useStyles = makeStyles(theme => ({
     height: '56px'
   },
   item1: {
-    order: 2,
-    marginBottom: '2em',
+    order: 1,
     [theme.breakpoints.up('md')]: {
-      marginBottom: '0em',
       order: 1
     }
   },
   item2: {
-    order: 1,
+    order: 2,
+    marginBottom: '1em',
     [theme.breakpoints.up('md')]: {
-      order: 2
+      order: 2,
+      marginBottom: '0em'
     }
   },
   urlList: {

@@ -20,10 +20,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: '0.3em'
   },
   responsiveText: {
-    fontSize: 'calc(14px + 6 * ((100vw - 320px) / 880))',
-    [theme.breakpoints.up('md')]: {
-      fontSize: '18px'
-    }
+    fontSize: '14px'
   }
 }));
 
