@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles, Container, TextField, Grid, Button, List, ListItem } from '@material-ui/core';
 import axios from '../AxiosClient';
 
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.REACT_APP_API_URL;
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles(theme => ({
   container: {
