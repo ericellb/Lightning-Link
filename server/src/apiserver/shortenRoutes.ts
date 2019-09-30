@@ -64,8 +64,16 @@ router.post('/shorten', async (req: Request, res: Response) => {
 export const getShortURL = (count: number, destination: string, userId: string | undefined): string => {
   // Generate our slug based on counter
   const slug = base62(count);
+  let analytics = 0;
+  if (userId !== undefined) {
+    analytics = 1;
+  }
   // Store slug and destination in our database
-  sql.query(`INSERT INTO urls (slug, destination) VALUES (${sql.escape(slug)}, ${sql.escape(destination)})`);
+  sql.query(
+    `INSERT INTO urls (slug, destination, analytics) VALUES (${sql.escape(slug)}, ${sql.escape(
+      destination
+    )}, ${sql.escape(analytics)})`
+  );
   redisClient.set(destination, slug, 'EX', REDIS_URL_EXPIRE);
 
   // If user id given (user logged in) attach the URL to his Userid for analytics
@@ -89,8 +97,11 @@ export const getOriginalURL = async (req: Request, slug: string): Promise<string
 
   // We found an entry
   if (rows[0]) {
-    // Fill analytics with request users IP Info
-    setAnalyticData(req, slug);
+    // If URL Supports Analytics (Created by logged in user)
+    // Set some analytic data
+    if (rows[0].analytics === 1) {
+      setAnalyticData(req, slug);
+    }
     return rows[0].destination as string;
   }
   // If no destination url for given short url return null
