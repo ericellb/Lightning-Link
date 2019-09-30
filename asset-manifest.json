@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Lightning-URL/static/css/main.53f43ab8.chunk.css",
-    "main.js": "/Lightning-URL/static/js/main.33dcb6d3.chunk.js",
-    "main.js.map": "/Lightning-URL/static/js/main.33dcb6d3.chunk.js.map",
-    "runtime-main.js": "/Lightning-URL/static/js/runtime-main.eecd2ca8.js",
-    "runtime-main.js.map": "/Lightning-URL/static/js/runtime-main.eecd2ca8.js.map",
-    "static/js/2.65ca663c.chunk.js": "/Lightning-URL/static/js/2.65ca663c.chunk.js",
-    "static/js/2.65ca663c.chunk.js.map": "/Lightning-URL/static/js/2.65ca663c.chunk.js.map",
-    "index.html": "/Lightning-URL/index.html",
-    "precache-manifest.7c6c749ca7509a6fa5ad54060737aef4.js": "/Lightning-URL/precache-manifest.7c6c749ca7509a6fa5ad54060737aef4.js",
-    "service-worker.js": "/Lightning-URL/service-worker.js",
-    "static/css/main.53f43ab8.chunk.css.map": "/Lightning-URL/static/css/main.53f43ab8.chunk.css.map",
-    "static/media/link.b1d68677.svg": "/Lightning-URL/static/media/link.b1d68677.svg"
+    "main.css": "/static/css/main.53f43ab8.chunk.css",
+    "main.js": "/static/js/main.33dcb6d3.chunk.js",
+    "main.js.map": "/static/js/main.33dcb6d3.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c2763ce9.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c2763ce9.js.map",
+    "static/js/2.65ca663c.chunk.js": "/static/js/2.65ca663c.chunk.js",
+    "static/js/2.65ca663c.chunk.js.map": "/static/js/2.65ca663c.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.f94fa3a5de1a2402bc8daaa8b8f3e096.js": "/precache-manifest.f94fa3a5de1a2402bc8daaa8b8f3e096.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.53f43ab8.chunk.css.map": "/static/css/main.53f43ab8.chunk.css.map",
+    "static/media/link.b1d68677.svg": "/static/media/link.b1d68677.svg"
   }
 }
