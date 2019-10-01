@@ -150,6 +150,14 @@ export default function Shortener() {
   const [createdURLS, setCreatedURLS] = useState<UrlList[]>([]);
   const [buttonIndex, setButtonIndex] = useState(0);
 
+  // Catches enter key in TextField to submit
+  const catchEnter = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      submitURL(destURL);
+      e.preventDefault();
+    }
+  };
+
   // Handles onclick button
   const handleButtonClick = (buttonIndex: number, text: string) => {
     navigator.clipboard.writeText(text);
@@ -211,6 +219,7 @@ export default function Shortener() {
               value={destURL}
               onChange={e => setDestURL(e.target.value)}
               variant="outlined"
+              onKeyPress={e => catchEnter(e)}
               InputLabelProps={{
                 className: classes.textFieldLabel
               }}
