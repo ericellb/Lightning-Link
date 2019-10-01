@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { makeStyles, Container, TextField, Grid, Button, List, ListItem } from '@material-ui/core';
+import { makeStyles, Container, TextField, Grid, Button, List, ListItem, Fade } from '@material-ui/core';
 import axios from '../AxiosClient';
 
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : process.env.REACT_APP_API_URL;
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'http://ltng.link/#';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   notchedOutline: {
     borderRadius: '6px',
-    borderColor: '#1b3987 !important'
+    borderColor: '#1b3987'
   },
   textFieldFocus: {
     borderRadius: '6px',
@@ -95,6 +95,22 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#edf2fe',
     color: '#2a5bd7',
     boxShadow: 'none'
+  },
+  errorGrid: {
+    order: 3
+  },
+  errorContainer: {
+    background: 'red',
+    borderRadius: '8px',
+    padding: '1em',
+    boxSizing: 'border-box',
+    height: '56px',
+    backgroundColor: '#fa9b93',
+    color: '#731b14',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Roboto'
   }
 }));
 
@@ -106,7 +122,17 @@ interface UrlList {
 export default function Shortener() {
   const classes = useStyles({});
   const [destURL, setDestURL] = useState('');
+  const [textErrorMsg, setTextErrorMsg] = useState('');
+  const [fadeError, setFadeError] = useState(false);
   const [createdURLS, setCreatedURLS] = useState<UrlList[]>([]);
+
+  // Handles error messages
+  const showErrorMessage = (errorMessage: string) => {
+    setTextErrorMsg(errorMessage);
+    setFadeError(true);
+    setTimeout(() => setFadeError(false), 2775);
+    setTimeout(() => setTextErrorMsg(''), 3000);
+  };
 
   // Submits URL to API
   const postURL = async (destURL: string) => {
@@ -117,12 +143,15 @@ export default function Shortener() {
 
   // Returns true or false if valid URL
   const validInput = (destURL: string) => {
-    return true;
+    // eslint-disable-next-line
+    let urlValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+    if (urlValidator.test(destURL)) {
+      return true;
+    } else return false;
   };
 
   // Handles submission of URL to Shorten
   const submitURL = async (destURL: string) => {
-    console.log('yo');
     if (validInput(destURL)) {
       let res = await postURL(destURL);
       if (res.status === 200) {
@@ -130,10 +159,10 @@ export default function Shortener() {
         setCreatedURLS([...createdURLS, { slug: res.data, destination: destURL }]);
         setDestURL('');
       } else {
-        // Throw error in TextField
+        showErrorMessage(`Server Error : ${res.status}. Hang in tight, were working on it!`);
       }
     } else {
-      // Throw error in TextField
+      showErrorMessage(`Unable to create Lightning Link, not a valid URL`);
     }
   };
 
@@ -172,6 +201,13 @@ export default function Shortener() {
               {' '}
               Shorten{' '}
             </Button>
+          </Grid>
+          <Grid item xs={12} className={classes.errorGrid}>
+            {textErrorMsg !== '' && (
+              <Fade in={fadeError}>
+                <div className={classes.errorContainer}>{textErrorMsg}</div>
+              </Fade>
+            )}
           </Grid>
           {createdURLS.length !== 0 && (
             <List className={classes.urlList}>
