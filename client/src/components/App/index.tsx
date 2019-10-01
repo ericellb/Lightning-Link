@@ -61,7 +61,8 @@ const theme = createMuiTheme({
     MuiSnackbarContent: {
       root: {
         backgroundColor: '#2a5bd7',
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Roboto'
       }
     },
     MuiAppBar: {

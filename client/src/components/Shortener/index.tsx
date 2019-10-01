@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     width: '100%',
-    background: 'white',
+    background: '#fefefe',
     borderRadius: '8px'
   },
   textFieldInput: {
@@ -60,14 +60,20 @@ const useStyles = makeStyles(theme => ({
   urlList: {
     order: 3,
     width: '100%',
+    maxWidth: '1240px',
     backgroundColor: '#FEFEFE',
     color: 'black',
+    fontSize: '16px',
+    margin: '12px',
+    padding: '0px',
+    fontWeight: 300,
     '& li:not(:last-child):after': {
-      width: '96.5%',
+      width: 'calc(100% - 24px)',
       content: '""',
       border: '0.5px solid #b6b6b6',
       position: 'absolute',
-      bottom: '0px'
+      bottom: '0px',
+      left: '12px'
     },
     '&:first-of-type': {
       borderTopLeftRadius: '6px',
@@ -80,12 +86,17 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listItem: {
-    padding: '1em',
+    padding: '16px',
     display: 'flex',
     justifyContent: 'space-between'
   },
   urlListSlug: {
-    color: '#2a5bd7'
+    color: '#2a5bd7',
+    '& a': {
+      textDecoration: 'none',
+      color: '#0236b9',
+      fontWeight: 400
+    }
   },
   urlListDestination: {
     color: 'black'
@@ -94,7 +105,18 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '1em',
     backgroundColor: '#edf2fe',
     color: '#2a5bd7',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    '&:hover': {
+      backgroundColor: '#cacfd9'
+    },
+    maxHeight: '83px',
+    height: '36px',
+    maxWidth: '71px'
+  },
+  copySuccess: {
+    content: 'Copied !important',
+    backgroundColor: '#649949 !important',
+    color: '#fefefe'
   },
   errorGrid: {
     order: 3
@@ -124,7 +146,17 @@ export default function Shortener() {
   const [destURL, setDestURL] = useState('');
   const [textErrorMsg, setTextErrorMsg] = useState('');
   const [fadeError, setFadeError] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
   const [createdURLS, setCreatedURLS] = useState<UrlList[]>([]);
+  const [buttonIndex, setButtonIndex] = useState(0);
+
+  // Handles onclick button
+  const handleButtonClick = (buttonIndex: number, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopySuccess(true);
+    setButtonIndex(buttonIndex);
+    setTimeout(() => setCopySuccess(false), 1500);
+  };
 
   // Handles error messages
   const showErrorMessage = (errorMessage: string) => {
@@ -198,27 +230,35 @@ export default function Shortener() {
               className={classes.shortenButton}
               onClick={() => submitURL(destURL)}
             >
-              {' '}
-              Shorten{' '}
+              Shorten
             </Button>
           </Grid>
-          <Grid item xs={12} className={classes.errorGrid}>
-            {textErrorMsg !== '' && (
+
+          {textErrorMsg !== '' && (
+            <Grid item xs={12} className={classes.errorGrid}>
               <Fade in={fadeError}>
                 <div className={classes.errorContainer}>{textErrorMsg}</div>
               </Fade>
-            )}
-          </Grid>
+            </Grid>
+          )}
+
           {createdURLS.length !== 0 && (
             <List className={classes.urlList}>
-              {createdURLS.map(url => {
+              {createdURLS.map((url, i) => {
                 return (
                   <ListItem className={classes.listItem}>
                     <div className={classes.urlListDestination}>{url.destination}</div>
                     <div className={classes.urlListSlug}>
                       <a href={baseUrl + '/' + url.slug}>{baseUrl + '/' + url.slug}</a>
-                      <Button variant="contained" color="primary" className={classes.copyButton}>
-                        Copy
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={
+                          classes.copyButton + ' ' + (buttonIndex === i && copySuccess ? classes.copySuccess : '')
+                        }
+                        onClick={() => handleButtonClick(i, baseUrl + '/' + url.slug)}
+                      >
+                        {buttonIndex === i && copySuccess ? 'Copied' : 'Copy'}
                       </Button>
                     </div>
                   </ListItem>
