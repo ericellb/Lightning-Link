@@ -160,10 +160,23 @@ export default function Shortener() {
 
   // Handles onclick button
   const handleButtonClick = (buttonIndex: number, text: string) => {
-    navigator.clipboard.writeText(text);
+    handleClipboardCopy(text);
     setCopySuccess(true);
     setButtonIndex(buttonIndex);
     setTimeout(() => setCopySuccess(false), 1500);
+  };
+
+  // Handles copying to clipboard
+  const handleClipboardCopy = (text: string) => {
+    var dummyText = document.createElement('textarea');
+    dummyText.style.position = 'absolute';
+    dummyText.style.top = document.documentElement.scrollTop.toString();
+    dummyText.value = text;
+    document.body.appendChild(dummyText);
+    dummyText.focus();
+    dummyText.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummyText);
   };
 
   // Handles error messages
