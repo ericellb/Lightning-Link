@@ -2,7 +2,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { connection as sql } from '../db';
-import { getUniqueId } from './utils';
+import { getUniqueId, generateId, userAuthed } from './utils';
 
 export let router = express.Router();
 
@@ -35,6 +35,7 @@ router.post('/user/create', async (req: Request, res: Response) => {
     // No user exists, lets create it!
     else {
       const userId = await getUniqueId('user');
+      const accessToken = generateId(100);
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(userPass, salt, (err, hash) => {
           if (err) throw err;
@@ -42,11 +43,11 @@ router.post('/user/create', async (req: Request, res: Response) => {
           var date = new Date();
           // Create user
           sql.query(
-            `INSERT INTO users (user_id, user_name, user_pass, user_last_active) VALUES (${sql.escape(
+            `INSERT INTO users (user_id, user_name, user_pass, user_access_token, user_last_active) VALUES (${sql.escape(
               userId
-            )}, ${sql.escape(userName)}, ${sql.escape(userPass)}, ${sql.escape(date)})`
+            )}, ${sql.escape(userName)}, ${sql.escape(userPass)}, ${sql.escape(accessToken)}, ${sql.escape(date)})`
           );
-          res.status(200).send({ userName: userName, userId: userId });
+          res.status(200).send({ userName: userName, userId: userId, userToken: accessToken });
         });
       });
     }
@@ -71,7 +72,7 @@ router.get('/user/login', async (req: Request, res: Response) => {
   const hashPass = response[0].user_pass;
   const isMatch = await bcrypt.compare(userPass, hashPass);
   if (isMatch) {
-    res.status(200).send({ userName: userName, userId: response[0].user_id });
+    res.status(200).send({ userName: userName, userId: response[0].user_id, userToken: response[0].user_access_token });
   } else {
     error = 'Username / Password does not match';
     res.status(400).send(error);

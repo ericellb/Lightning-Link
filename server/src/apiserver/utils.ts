@@ -8,19 +8,24 @@ let geoKEY = process.env.GEO_API_KEY;
 
 // Returns true if user exists in DB, false if not
 export const userExists = async (userId: string) => {
-  const sqlQuery = `SELECT * FROM users WHERE user_id = '${userId}'`;
+  const sqlQuery = `SELECT * FROM users WHERE user_id = '${sql.escape(userId)}'`;
   let response: any = await sql.query(sqlQuery);
   if (response.length > 0) return true;
   else return false;
 };
 
-// Gets a Server Id and checks if it is unique in DB
+export const userAuthed = async (userId: string, userToken: string) => {
+  const sqlQuery = `SELECT * from users where user_id = ${sql.escape(userId)}`;
+  let response: any = await sql.query(sqlQuery);
+  if (response[0].user_access_token === userToken) return true;
+  else return false;
+};
+
+// Checks if a Given ID exists in database (to generate userID)
 export const getUniqueId = async (type: string): Promise<string> => {
-  const id = generateId();
+  const id = generateId(7);
   let sqlQuery = '';
-  if (type === 'server') sqlQuery = `SELECT * FROM servers WHERE server_id = '${id}'`;
-  else if (type === 'channel') sqlQuery = `SELECT * FROM channels WHERE channel_id = '${id}'`;
-  else if (type === 'user') sqlQuery = `SELECT * FROM users WHERE user_id = '${id}'`;
+  if (type === 'user') sqlQuery = `SELECT * FROM users WHERE user_id = '${sql.escape(id)}'`;
   let response: any = await sql.query(sqlQuery);
   if (response.length > 0) {
     return getUniqueId(type);
@@ -93,11 +98,11 @@ export const setAnalyticData = async (req: Request, slug: string) => {
 };
 
 // Generates a hexdecimal 10 character string
-const generateId = () => {
+export const generateId = (length: number) => {
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let charactersLength = characters.length;
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
