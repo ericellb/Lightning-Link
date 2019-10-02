@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles, Container, TextField, Grid, Button, List, ListItem, Fade } from '@material-ui/core';
 import axios from '../AxiosClient';
-import { create } from 'istanbul-reports';
 
 const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'http://ltng.link/#';
 
@@ -237,9 +236,12 @@ export default function Shortener() {
   // Checks if already shortened link (In list of shortened links below...)
   const alreadyShortened = (destURL: string) => {
     let foundUrl = false;
+    // return a value at end of arrow function bogus
+    // eslint-disable-next-line
     createdURLS.find(url => {
-      console.log(url.destination);
-      if (url.destination === destURL) foundUrl = true;
+      if (url.destination === destURL) {
+        foundUrl = true;
+      }
     });
     return foundUrl;
   };

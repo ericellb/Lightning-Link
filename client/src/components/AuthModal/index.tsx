@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, makeStyles, Container, TextField, Typography, Button, Fade } from '@material-ui/core';
+import { Modal, makeStyles, TextField, Typography, Button, Fade } from '@material-ui/core';
 import axios from '../AxiosClient';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../actions';

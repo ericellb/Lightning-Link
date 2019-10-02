@@ -1,6 +1,5 @@
 import React from 'react';
-import { Grid, makeStyles, Container, Typography, Avatar } from '@material-ui/core';
-import { InsertLink } from '@material-ui/icons';
+import { Grid, makeStyles, Container, Typography } from '@material-ui/core';
 import { ReactComponent as LinkIcon } from './link.svg';
 
 const useStyles = makeStyles(theme => ({

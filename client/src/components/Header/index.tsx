@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, makeStyles, Container } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, makeStyles, Container } from '@material-ui/core';
 import { OfflineBolt } from '@material-ui/icons';
 import AuthModal from '../AuthModal';
 import { StoreState } from '../../reducers';

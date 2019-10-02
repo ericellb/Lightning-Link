@@ -10,7 +10,6 @@ import './style.css';
 import Info from '../Info';
 import axios from '../AxiosClient';
 import createHashHistory from '../../history';
-import AuthModal from '../AuthModal';
 
 export default function App() {
   // Function to redirect user to their Short URL
@@ -31,7 +30,7 @@ export default function App() {
       };
 
       getRedirectUrl(match.params.slug);
-    }, []);
+    }, [match.params.slug]);
     return <React.Fragment></React.Fragment>;
   };
 
