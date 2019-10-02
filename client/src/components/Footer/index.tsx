@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
     fontFamily: 'Roboto',
     [theme.breakpoints.up('md')]: {
-      position: 'fixed',
+      position: 'sticky',
       bottom: '0px'
     }
   },

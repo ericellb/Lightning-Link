@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles, Container, TextField, Grid, Button, List, ListItem, Fade } from '@material-ui/core';
 import axios from '../AxiosClient';
+import { create } from 'istanbul-reports';
 
 const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'http://ltng.link/#';
 
@@ -232,19 +233,34 @@ export default function Shortener() {
     } else return false;
   };
 
+  // Checks if already shortened link (In list of shortened links below...)
+  const alreadyShortened = (destURL: string) => {
+    let foundUrl = false;
+    createdURLS.find(url => {
+      console.log(url.destination);
+      if (url.destination === destURL) foundUrl = true;
+    });
+    return foundUrl;
+  };
+
   // Handles submission of URL to Shorten
   const submitURL = async (destURL: string) => {
-    if (validInput(destURL)) {
-      let res = await postURL(destURL);
-      if (res.status === 200) {
-        // Show new URL under TextField, and empty it
-        setCreatedURLS([...createdURLS, { slug: res.data, destination: destURL }]);
-        setDestURL('');
+    if (!alreadyShortened(destURL)) {
+      if (validInput(destURL)) {
+        let res = await postURL(destURL);
+        if (res.status === 200) {
+          // Show new URL under TextField, and empty it
+          setCreatedURLS([...createdURLS, { slug: res.data, destination: destURL }]);
+          setDestURL('');
+        } else {
+          showErrorMessage(`Server Error : ${res.status}. Hang in tight, were working on it!`);
+        }
       } else {
-        showErrorMessage(`Server Error : ${res.status}. Hang in tight, were working on it!`);
+        showErrorMessage(`Unable to create Lightning Link, not a valid URL`);
       }
     } else {
-      showErrorMessage(`Unable to create Lightning Link, not a valid URL`);
+      showErrorMessage(`Already shortened this link, look below ;)`);
+      setDestURL('');
     }
   };
 
