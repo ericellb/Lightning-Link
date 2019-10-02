@@ -8,8 +8,12 @@ const useStyles = makeStyles(theme => ({
   container: {
     width: '100%',
     backgroundColor: '#0b1736',
-    padding: '3em',
-    boxSizing: 'border-box'
+    paddingTop: '1em',
+    paddingBottom: '1em',
+    boxSizing: 'border-box',
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '3em'
+    }
   },
   flex: {
     display: 'flex',
@@ -45,26 +49,31 @@ const useStyles = makeStyles(theme => ({
   },
   item1: {
     order: 1,
+    paddingBottom: '0px !important',
     [theme.breakpoints.up('md')]: {
-      order: 1
+      order: 1,
+      paddingBottom: '12px !important'
     }
   },
   item2: {
     order: 2,
-    marginBottom: '1em',
+    marginBottom: '12px',
+    paddingBottom: '0px !important',
     [theme.breakpoints.up('md')]: {
       order: 2,
-      marginBottom: '0em'
+      marginBottom: '0em',
+      paddingBottom: '12px !important'
     }
   },
   urlList: {
     order: 3,
-    width: '100%',
+    width: 'calc(100% - 24px)',
     maxWidth: '1240px',
     backgroundColor: '#FEFEFE',
     color: 'black',
-    fontSize: '16px',
+    fontSize: '17px',
     margin: '12px',
+    marginTop: '0px',
     padding: '0px',
     fontWeight: 300,
     '& li:not(:last-child):after': {
@@ -88,7 +97,17 @@ const useStyles = makeStyles(theme => ({
   listItem: {
     padding: '16px',
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('xs')]: {
+      flexWrap: 'wrap'
+    }
+  },
+  urlListDestination: {
+    color: 'black',
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: '8px'
+    }
   },
   urlListSlug: {
     color: '#2a5bd7',
@@ -96,10 +115,10 @@ const useStyles = makeStyles(theme => ({
       textDecoration: 'none',
       color: '#0236b9',
       fontWeight: 400
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
     }
-  },
-  urlListDestination: {
-    color: 'black'
   },
   copyButton: {
     marginLeft: '1em',
@@ -111,7 +130,13 @@ const useStyles = makeStyles(theme => ({
     },
     maxHeight: '83px',
     height: '36px',
-    maxWidth: '71px'
+    maxWidth: '71px',
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 'none',
+      width: '100%',
+      margin: '0px',
+      marginTop: '8px'
+    }
   },
   copySuccess: {
     content: 'Copied !important',
@@ -119,7 +144,11 @@ const useStyles = makeStyles(theme => ({
     color: '#fefefe'
   },
   errorGrid: {
-    order: 3
+    order: 3,
+    paddingTop: '0px !important',
+    [theme.breakpoints.up('md')]: {
+      paddingTop: '12px !important'
+    }
   },
   errorContainer: {
     background: 'red',
@@ -170,7 +199,7 @@ export default function Shortener() {
   const handleClipboardCopy = (text: string) => {
     var dummyText = document.createElement('textarea');
     dummyText.style.position = 'absolute';
-    dummyText.style.top = document.documentElement.scrollTop.toString();
+    dummyText.style.top = document.documentElement.scrollTop.toString() + 'px';
     dummyText.value = text;
     document.body.appendChild(dummyText);
     dummyText.focus();

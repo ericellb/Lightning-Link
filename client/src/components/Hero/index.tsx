@@ -33,8 +33,8 @@ const useStyles = makeStyles(theme => ({
     color: '#56575b'
   },
   linkImage: {
-    height: 'calc(30vh + 4 * ((100vw - 520px) / 200))',
-    width: 'calc(30vh + 4 * ((100vw - 520px) / 200))',
+    height: 'calc(27vh + 4 * ((100vw - 520px) / 200))',
+    width: 'calc(27vh + 4 * ((100vw - 520px) / 200))',
     fill: '#0b1736'
   },
   gridItem: {

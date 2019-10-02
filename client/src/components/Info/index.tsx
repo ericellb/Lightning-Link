@@ -8,8 +8,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   centerText: {
-    textAlign: 'center',
-    minHeight: '350px'
+    textAlign: 'center'
   },
   gridCard: {
     paddingTop: '2em',
