@@ -273,6 +273,7 @@ export default function Shortener() {
             <TextField
               id="filled-name"
               placeholder="Shorten your link"
+              title="URL to Shorten"
               autoComplete="off"
               className={classes.textField}
               value={destURL}
@@ -288,6 +289,9 @@ export default function Shortener() {
                   notchedOutline: classes.notchedOutline,
                   focused: classes.textFieldFocus
                 }
+              }}
+              inputProps={{
+                'aria-label': 'URL to Shorten'
               }}
             />
           </Grid>

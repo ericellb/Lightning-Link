@@ -169,6 +169,7 @@ export default function AuthModal(props: AuthModalProps) {
           variant="outlined"
           id="user-name"
           label="Username"
+          title="Username"
           placeholder="Username"
           className={classes.textField}
           value={userName}
@@ -190,6 +191,7 @@ export default function AuthModal(props: AuthModalProps) {
           id="user-pass"
           label="Password"
           type="password"
+          title="Password"
           placeholder="Password"
           className={classes.textField}
           value={userPass}

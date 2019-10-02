@@ -36,7 +36,7 @@ export default function Footer() {
       <Container className={classes.flex}>
         <div>Lightning Link - 2019</div>
         <div>
-          <IconButton onClick={() => handleLink('https://github.com/ericellb/Lightning-Link')}>
+          <IconButton title="Github Button" onClick={() => handleLink('https://github.com/ericellb/Lightning-Link')}>
             <svg
               className={classes.icons}
               xmlns="http://www.w3.org/2000/svg"
