@@ -15,7 +15,6 @@ const initialState = {
 };
 
 export const userReducer = (state: UserStore = initialState, action: UserActionTypes): UserStore => {
-  console.log('trigger');
   switch (action.type) {
     case ACTION.SIGN_IN:
       return {
@@ -26,6 +25,7 @@ export const userReducer = (state: UserStore = initialState, action: UserActionT
         userToken: action.payload.userToken
       };
     case ACTION.SIGN_OUT:
+      console.log('out');
       return { ...state, isSignedIn: false, userId: '', userName: '', userToken: '' };
     default:
       return state;

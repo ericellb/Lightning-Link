@@ -86,11 +86,12 @@ const useStyles = makeStyles(theme => ({
 
 type AuthModalProps = {
   onModalClose: (state: boolean) => void;
+  open: boolean;
 };
 
 export default function AuthModal(props: AuthModalProps) {
   const classes = useStyles({});
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(props.open);
   const [userName, setUserName] = useState('');
   const [userPass, setUserPass] = useState('');
   const [authType, setAuthType] = useState('Sign In');
@@ -128,7 +129,7 @@ export default function AuthModal(props: AuthModalProps) {
         dispatch(signIn(res.data));
         setTextError(false);
         showMessage('Success : Logging in...');
-        setTimeout(() => setOpen(false), 1300);
+        setTimeout(() => handleModalClose(false), 1300);
       }
     } catch (err) {
       setTextError(true);
@@ -147,8 +148,8 @@ export default function AuthModal(props: AuthModalProps) {
   // Handles closing modal
   const handleModalClose = (state: boolean) => {
     console.log('trying to close..');
-    setOpen(state);
     props.onModalClose(state);
+    setOpen(state);
   };
 
   return (
