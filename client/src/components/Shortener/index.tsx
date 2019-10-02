@@ -14,10 +14,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#0b1736',
     paddingTop: '2em',
     paddingBottom: '2em',
-    boxSizing: 'border-box',
-    [theme.breakpoints.up('md')]: {
-      marginBottom: '3em'
-    }
+    boxSizing: 'border-box'
   },
   flex: {
     display: 'flex',
