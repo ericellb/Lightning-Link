@@ -293,6 +293,7 @@ export default function Shortener() {
           </Grid>
           <Grid item md={3} xs={12} className={classes.item2}>
             <Button
+              title="Shorten URL"
               variant="contained"
               color="primary"
               className={classes.shortenButton}
@@ -319,6 +320,7 @@ export default function Shortener() {
                     <div className={classes.urlListSlug}>
                       <a href={baseUrl + '/' + url.slug}>{baseUrl + '/' + url.slug}</a>
                       <Button
+                        title="Copy to Clipboard"
                         variant="contained"
                         color="primary"
                         className={

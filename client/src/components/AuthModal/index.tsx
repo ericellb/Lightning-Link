@@ -155,8 +155,8 @@ export default function AuthModal(props: AuthModalProps) {
 
   return (
     <Modal
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
+      aria-labelledby="authentication-modal"
+      aria-describedby="login or create account window"
       open={open}
       onClose={() => handleModalClose(false)}
       className={classes.modalContainer}
@@ -215,6 +215,7 @@ export default function AuthModal(props: AuthModalProps) {
         )}
         <Button
           className={classes.authButton}
+          title={authType}
           variant="contained"
           color="primary"
           onClick={() => submitAuth(userName, userPass)}
