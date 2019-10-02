@@ -7,10 +7,14 @@ const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/
 
 const useStyles = makeStyles(theme => ({
   container: {
+    minHeight: '150px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     backgroundColor: '#0b1736',
-    paddingTop: '1em',
-    paddingBottom: '1em',
+    paddingTop: '2em',
+    paddingBottom: '2em',
     boxSizing: 'border-box',
     [theme.breakpoints.up('md')]: {
       marginBottom: '3em'
@@ -146,10 +150,7 @@ const useStyles = makeStyles(theme => ({
   },
   errorGrid: {
     order: 3,
-    paddingTop: '0px !important',
-    [theme.breakpoints.up('md')]: {
-      paddingTop: '12px !important'
-    }
+    paddingTop: '0px !important'
   },
   errorContainer: {
     background: 'red',
