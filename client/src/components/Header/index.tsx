@@ -44,10 +44,20 @@ export default function Header() {
           {/* Show if Signed In */}
           {user.isSignedIn && (
             <React.Fragment>
-              <Button color="inherit" className={classes.responsiveText} onClick={() => setShowAuth(true)}>
+              <Button
+                color="inherit"
+                title="Analytics"
+                className={classes.responsiveText}
+                onClick={() => setShowAuth(true)}
+              >
                 Analytics
               </Button>
-              <Button color="inherit" className={classes.responsiveText} onClick={() => dispatch(signOut())}>
+              <Button
+                color="inherit"
+                title="Logout"
+                className={classes.responsiveText}
+                onClick={() => dispatch(signOut())}
+              >
                 Logout
               </Button>
             </React.Fragment>
@@ -55,10 +65,20 @@ export default function Header() {
           {/* Show if Not Signed In */}
           {!user.isSignedIn && (
             <React.Fragment>
-              <Button color="inherit" className={classes.responsiveText} onClick={() => setShowAuth(true)}>
+              <Button
+                color="inherit"
+                title="Login"
+                className={classes.responsiveText}
+                onClick={() => setShowAuth(true)}
+              >
                 Login
               </Button>
-              <Button color="inherit" className={classes.responsiveText} onClick={() => setShowAuth(true)}>
+              <Button
+                color="inherit"
+                title="Sign Up"
+                className={classes.responsiveText}
+                onClick={() => setShowAuth(true)}
+              >
                 Sign Up
               </Button>
             </React.Fragment>
