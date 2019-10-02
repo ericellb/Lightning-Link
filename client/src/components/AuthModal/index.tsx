@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, makeStyles, Container, TextField, Typography, Button, Fade } from '@material-ui/core';
 import axios from '../AxiosClient';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   modalContainer: {
@@ -95,6 +97,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [textError, setTextError] = useState(false);
   const [textMessage, setTextMessage] = useState('');
   const [textFadeShow, setTextFadeShow] = useState(false);
+  const dispatch = useDispatch();
 
   // Switches between Sign in / Create Account
   const changeAuthType = (authType: string) => {
@@ -122,6 +125,7 @@ export default function AuthModal(props: AuthModalProps) {
     try {
       res = await axiosMethod(endpointURL);
       if (res.status === 200) {
+        dispatch(signIn(res.data));
         setTextError(false);
         showMessage('Success : Logging in...');
         setTimeout(() => setOpen(false), 1300);
