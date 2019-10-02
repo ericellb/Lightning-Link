@@ -159,7 +159,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'Roboto'
+    fontFamily: 'Roboto',
+    textAlign: 'center'
   }
 }));
 

@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   authContainer: {
-    width: '300px',
+    width: '340px',
     backgroundColor: '#fefefe',
     display: 'flex',
     flexWrap: 'wrap',
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
     padding: '1em',
     boxSizing: 'border-box',
     borderRadius: '8px',
+    outline: 'none',
     boxShadow: '0px 0px 8px 1px rgba(0,0,0,0.75)',
     [theme.breakpoints.down('xs')]: {
       width: '90%'
@@ -165,8 +166,10 @@ export default function AuthModal(props: AuthModalProps) {
           {authType}
         </Typography>
         <TextField
+          variant="outlined"
           id="user-name"
           label="Username"
+          placeholder="Username"
           className={classes.textField}
           value={userName}
           onChange={e => setUserName(e.target.value)}
@@ -183,9 +186,11 @@ export default function AuthModal(props: AuthModalProps) {
           }}
         />
         <TextField
+          variant="outlined"
           id="user-pass"
           label="Password"
           type="password"
+          placeholder="Password"
           className={classes.textField}
           value={userPass}
           onChange={e => setUserPass(e.target.value)}
