@@ -8,7 +8,7 @@ let geoKEY = process.env.GEO_API_KEY;
 
 // Returns true if user exists in DB, false if not
 export const userExists = async (userId: string) => {
-  const sqlQuery = `SELECT * FROM users WHERE user_id = '${sql.escape(userId)}'`;
+  const sqlQuery = `SELECT * FROM users WHERE user_id = ${sql.escape(userId)}`;
   let response: any = await sql.query(sqlQuery);
   if (response.length > 0) return true;
   else return false;
@@ -25,7 +25,7 @@ export const userAuthed = async (userId: string, userToken: string) => {
 export const getUniqueId = async (type: string): Promise<string> => {
   const id = generateId(7);
   let sqlQuery = '';
-  if (type === 'user') sqlQuery = `SELECT * FROM users WHERE user_id = '${sql.escape(id)}'`;
+  if (type === 'user') sqlQuery = `SELECT * FROM users WHERE user_id = ${sql.escape(id)}`;
   let response: any = await sql.query(sqlQuery);
   if (response.length > 0) {
     return getUniqueId(type);

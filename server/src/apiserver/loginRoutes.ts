@@ -17,9 +17,9 @@ router.post('/user/create', async (req: Request, res: Response) => {
 
   // Check for errors
   if (!userName || !userPass) {
-    error = 'Invalid Params';
+    error = 'Missing Username / Password';
   } else if (userPass.length < 6) {
-    error = 'Passwords need to be minimum 6 chracters';
+    error = 'Passwords need to be minimum 6 characters';
   }
 
   // If errors, send them
@@ -64,7 +64,7 @@ router.get('/user/login', async (req: Request, res: Response) => {
 
   // Check params exist
   if (!userName || !userPass) {
-    res.status(400).send('Invalid Params');
+    res.status(400).send('Missing Username / Password');
   }
 
   // Check if password matches, if so return userName and userId
