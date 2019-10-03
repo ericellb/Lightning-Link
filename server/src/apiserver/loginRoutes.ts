@@ -52,7 +52,7 @@ router.post('/user/create', async (req: Request, res: Response) => {
           res
             .status(200)
             .cookie('access_token', accessToken)
-            .send({ userName: userName, userId: userId, userToken: accessToken });
+            .send({ userName: userName, userId: userId });
         });
       });
     }
@@ -83,7 +83,7 @@ router.get('/user/login', async (req: Request, res: Response) => {
     res
       .status(200)
       .cookie('access_token', accessToken)
-      .send({ userName: userName, userId: response[0].user_id, userToken: response[0].user_access_token });
+      .send({ userName: userName, userId: response[0].user_id });
   } else {
     error = 'Username / Password does not match';
     res.status(400).send(error);
