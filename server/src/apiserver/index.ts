@@ -7,6 +7,9 @@ import { router as loginRoutes } from './loginRoutes';
 import { router as analyticRoutes } from './analyticRoutes';
 import request from 'request';
 
+// CORS Origins
+const origins = 'http://localhost:3000' || 'http://ltng.link';
+
 export default class ApiServer {
   constructor(counterURL: string, port: string) {
     // Start app
@@ -15,7 +18,7 @@ export default class ApiServer {
 
     // Server setup
     app.disable('x-powered-by');
-    app.use(cors());
+    app.use(cors({ origin: origins, credentials: true }));
     app.use(rateLimit);
 
     // Bind routes

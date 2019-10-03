@@ -49,7 +49,10 @@ router.post('/user/create', async (req: Request, res: Response) => {
               userId
             )}, ${sql.escape(userName)}, ${sql.escape(userPass)}, ${sql.escape(accessToken)}, ${sql.escape(date)})`
           );
-          res.status(200).send({ userName: userName, userId: userId, userToken: accessToken });
+          res
+            .status(200)
+            .cookie('access_token', accessToken)
+            .send({ userName: userName, userId: userId, userToken: accessToken });
         });
       });
     }
@@ -76,7 +79,11 @@ router.get('/user/login', async (req: Request, res: Response) => {
   if (isMatch) {
     let accessToken = generateId(ACCESS_TOKEN_LENGTH);
     sql.query(`UPDATE users SET user_access_token=${sql.escape(accessToken)} WHERE user_name=${sql.escape(userName)}`);
-    res.status(200).send({ userName: userName, userId: response[0].user_id, userToken: response[0].user_access_token });
+    console.log(req.headers);
+    res
+      .status(200)
+      .cookie('access_token', accessToken)
+      .send({ userName: userName, userId: response[0].user_id, userToken: response[0].user_access_token });
   } else {
     error = 'Username / Password does not match';
     res.status(400).send(error);
