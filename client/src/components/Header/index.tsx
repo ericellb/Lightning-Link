@@ -5,6 +5,7 @@ import AuthModal, { AuthType } from '../AuthModal';
 import { StoreState } from '../../reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { signOut } from '../../actions';
+import AnalyticsModal from '../AnalyticsModal';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
   const classes = useStyles({});
   const [showAuth, setShowAuth] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
   const [authType, setAuthType] = useState<AuthType>('Sign In');
   const dispatch = useDispatch();
   const user = useSelector((state: StoreState) => state.user);
@@ -55,7 +57,7 @@ export default function Header() {
                 color="inherit"
                 title="Analytics"
                 className={classes.responsiveText}
-                onClick={() => setShowAuth(true)}
+                onClick={() => setShowAnalytics(true)}
               >
                 Analytics
               </Button>
@@ -93,6 +95,7 @@ export default function Header() {
         </Toolbar>
       </Container>
       {showAuth && <AuthModal onModalClose={setShowAuth} open={showAuth} authType={authType} />}
+      {showAnalytics && <AnalyticsModal onModalClose={setShowAnalytics} open={showAnalytics} />}
     </AppBar>
   );
 }

@@ -10,8 +10,12 @@ import './style.css';
 import Info from '../Info';
 import axios from '../AxiosClient';
 import createHashHistory from '../../history';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../actions';
 
 export default function App() {
+  const dispatch = useDispatch();
+
   // Function to redirect user to their Short URL
   const Redirect = ({ match }: any) => {
     useEffect(() => {
@@ -34,15 +38,32 @@ export default function App() {
     return <React.Fragment></React.Fragment>;
   };
 
-  // Attempts to login using user_id + cookie access token
-  // If remember me set in local storage
-  const LoginIfRememberMe = () => {
-    let rememberMe = localStorage.getItem('rememberMe');
-    if (rememberMe) {
-      // Attempt to login with cookies
-      axios.get;
-    }
-  };
+  // Component on mount do once
+  // Will check if remember me set, and auths user
+  useEffect(() => {
+    // Attempts to login using user_id + cookie access token
+    // If remember me set in local storage
+    const LoginIfRememberMe = async () => {
+      let rememberMe = localStorage.getItem('rememberMe');
+      let userId = localStorage.getItem('userId');
+      let userName = localStorage.getItem('userName');
+      if (rememberMe === 'true' && userId && userName) {
+        let res = null;
+        // Attempt to login with cookies
+        try {
+          res = await axios.get(`/user/authed?userId=${userId}`, { withCredentials: true });
+          console.log(res);
+          if (res.status === 200 && res.data === true) {
+            dispatch(signIn({ userName: userName, userId: userId }));
+          }
+        } catch (err) {
+          console.log('err');
+        }
+      }
+    };
+
+    LoginIfRememberMe();
+  }, [dispatch]);
 
   return (
     <HashRouter>

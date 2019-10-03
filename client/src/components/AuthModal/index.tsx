@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, makeStyles, TextField, Typography, Button, Fade } from '@material-ui/core';
+import { Modal, makeStyles, TextField, Typography, Button, Fade, Checkbox } from '@material-ui/core';
 import axios from '../AxiosClient';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../actions';
@@ -82,7 +82,17 @@ const useStyles = makeStyles(theme => ({
   success: {
     backgroundColor: '#28a745',
     color: '#fefefe'
-  }
+  },
+  rememberMeContainer: {
+    marginRight: 'auto'
+  },
+  rememberMeCheck: {
+    color: '#1b3987',
+    '&$checked': {
+      color: '#1b3987'
+    }
+  },
+  checked: {}
 }));
 
 export type AuthType = 'Sign In' | 'Create Account';
@@ -98,6 +108,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [open, setOpen] = useState(props.open);
   const [userName, setUserName] = useState('');
   const [userPass, setUserPass] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [authType, setAuthType] = useState<AuthType>(props.authType);
   const [textError, setTextError] = useState(false);
   const [textMessage, setTextMessage] = useState('');
@@ -130,6 +141,9 @@ export default function AuthModal(props: AuthModalProps) {
     try {
       res = await axiosMethod(endpointURL, { withCredentials: true });
       if (res.status === 200) {
+        if (rememberMe) {
+          res.data.rememberMe = true;
+        }
         dispatch(signIn(res.data));
         setTextError(false);
         showMessage('Success : Logging in...');
@@ -210,6 +224,16 @@ export default function AuthModal(props: AuthModalProps) {
             }
           }}
         />
+        <div className={classes.rememberMeContainer}>
+          <Checkbox
+            checked={rememberMe}
+            value="rememberMe"
+            onChange={() => setRememberMe(!rememberMe)}
+            className={classes.rememberMeCheck}
+            color="default"
+          />
+          Remember me
+        </div>
         {textMessage !== '' && (
           <Fade in={textFadeShow}>
             <div className={classes.messageContainer + ' ' + (textError ? classes.error : classes.success)}>
