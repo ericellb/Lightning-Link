@@ -10,7 +10,6 @@ describe('Test Requesting / Creating new Counts (Used to create shortURL)', () =
       .get('/count')
       .query({ serverPort: '3003' })
       .then(res => {
-        console.log(res.body);
         expect(res.body).toHaveProperty('startCount');
         expect(res.body).toHaveProperty('currentCount');
         done();

@@ -79,7 +79,6 @@ export const getShortURL = (count: number, destination: string, userId: string |
   // If user id given (user logged in) attach the URL to his Userid for analytics
   // Only creator of URL can view analytics on a url
   if (userId) {
-    console.log(userId);
     sql.query(
       `INSERT INTO urls_analytics (urls_slug, creator_user_id, visits, worlds) 
        VALUES (${sql.escape(slug)}, ${sql.escape(userId)}, 0, '[]')`

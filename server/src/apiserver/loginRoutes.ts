@@ -79,7 +79,6 @@ router.get('/user/login', async (req: Request, res: Response) => {
   if (isMatch) {
     let accessToken = generateId(ACCESS_TOKEN_LENGTH);
     sql.query(`UPDATE users SET user_access_token=${sql.escape(accessToken)} WHERE user_name=${sql.escape(userName)}`);
-    console.log(req.headers);
     res
       .status(200)
       .cookie('access_token', accessToken, { httpOnly: true })

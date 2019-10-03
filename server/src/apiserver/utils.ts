@@ -137,7 +137,6 @@ const formatAnalyticData = (body: any, rows: any) => {
     worlds.push(requestLocation);
   }
 
-  console.log(worlds);
   return JSON.stringify(worlds);
 };
 

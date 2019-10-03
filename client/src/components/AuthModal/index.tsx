@@ -130,7 +130,6 @@ export default function AuthModal(props: AuthModalProps) {
     try {
       res = await axiosMethod(endpointURL, { withCredentials: true });
       if (res.status === 200) {
-        console.log(res);
         dispatch(signIn(res.data));
         setTextError(false);
         showMessage('Success : Logging in...');
@@ -138,7 +137,6 @@ export default function AuthModal(props: AuthModalProps) {
       }
     } catch (err) {
       setTextError(true);
-      console.log(err);
       showMessage(err.response.data);
     }
   };
@@ -153,7 +151,6 @@ export default function AuthModal(props: AuthModalProps) {
 
   // Handles closing modal
   const handleModalClose = (state: boolean) => {
-    console.log('trying to close..');
     props.onModalClose(state);
     setOpen(state);
   };
