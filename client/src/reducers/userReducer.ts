@@ -4,14 +4,12 @@ export interface UserStore {
   isSignedIn: boolean;
   userId: string;
   userName: string;
-  userToken: string;
 }
 
 const initialState = {
   isSignedIn: false,
   userId: '',
-  userName: '',
-  userToken: ''
+  userName: ''
 };
 
 export const userReducer = (state: UserStore = initialState, action: UserActionTypes): UserStore => {
@@ -21,12 +19,10 @@ export const userReducer = (state: UserStore = initialState, action: UserActionT
         ...state,
         isSignedIn: true,
         userId: action.payload.userId,
-        userName: action.payload.userName,
-        userToken: action.payload.userToken
+        userName: action.payload.userName
       };
     case ACTION.SIGN_OUT:
-      console.log('out');
-      return { ...state, isSignedIn: false, userId: '', userName: '', userToken: '' };
+      return { ...state, isSignedIn: false, userId: '', userName: '' };
     default:
       return state;
   }

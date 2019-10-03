@@ -21,5 +21,4 @@ export type SignOutAction = {
 export interface SignInData {
   userId: string;
   userName: string;
-  userToken: string;
 }

@@ -128,8 +128,9 @@ export default function AuthModal(props: AuthModalProps) {
 
     // Create or login depending on authType
     try {
-      res = await axiosMethod(endpointURL);
+      res = await axiosMethod(endpointURL, { withCredentials: true });
       if (res.status === 200) {
+        console.log(res);
         dispatch(signIn(res.data));
         setTextError(false);
         showMessage('Success : Logging in...');
@@ -137,6 +138,7 @@ export default function AuthModal(props: AuthModalProps) {
       }
     } catch (err) {
       setTextError(true);
+      console.log(err);
       showMessage(err.response.data);
     }
   };
