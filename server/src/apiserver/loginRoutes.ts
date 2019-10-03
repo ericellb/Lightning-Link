@@ -6,6 +6,8 @@ import { getUniqueId, generateId, userAuthed } from './utils';
 
 export let router = express.Router();
 
+const ACCESS_TOKEN_LENGTH = 100;
+
 // Route to create a new user
 // Expects -> userName
 // Expects -> userPass
@@ -35,7 +37,7 @@ router.post('/user/create', async (req: Request, res: Response) => {
     // No user exists, lets create it!
     else {
       const userId = await getUniqueId('user');
-      const accessToken = generateId(100);
+      const accessToken = generateId(ACCESS_TOKEN_LENGTH);
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(userPass, salt, (err, hash) => {
           if (err) throw err;
@@ -72,6 +74,8 @@ router.get('/user/login', async (req: Request, res: Response) => {
   const hashPass = response[0].user_pass;
   const isMatch = await bcrypt.compare(userPass, hashPass);
   if (isMatch) {
+    let accessToken = generateId(ACCESS_TOKEN_LENGTH);
+    sql.query(`UPDATE users SET user_access_token=${sql.escape(accessToken)}`);
     res.status(200).send({ userName: userName, userId: response[0].user_id, userToken: response[0].user_access_token });
   } else {
     error = 'Username / Password does not match';
