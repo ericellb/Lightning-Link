@@ -51,7 +51,7 @@ router.post('/user/create', async (req: Request, res: Response) => {
           );
           res
             .status(200)
-            .cookie('access_token', accessToken)
+            .cookie('access_token', accessToken, { httpOnly: true })
             .send({ userName: userName, userId: userId });
         });
       });
@@ -82,7 +82,7 @@ router.get('/user/login', async (req: Request, res: Response) => {
     console.log(req.headers);
     res
       .status(200)
-      .cookie('access_token', accessToken)
+      .cookie('access_token', accessToken, { httpOnly: true })
       .send({ userName: userName, userId: response[0].user_id });
   } else {
     error = 'Username / Password does not match';
