@@ -9,6 +9,7 @@ declare global {
     interface ProcessEnv {
       NODE_ENV: 'development' | 'production';
       ROOT_URL: string;
+      ORIGIN_URL: string;
       API1_PORT: string;
       API2_PORT: string;
       LOAD_BALANCE_PORT: string;

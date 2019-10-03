@@ -8,7 +8,7 @@ import { router as analyticRoutes } from './analyticRoutes';
 import request from 'request';
 
 // CORS Origins
-const origins = 'http://localhost:3000' || 'http://ltng.link';
+const origins = process.env.ORIGIN_URL;
 
 export default class ApiServer {
   constructor(counterURL: string, port: string) {
