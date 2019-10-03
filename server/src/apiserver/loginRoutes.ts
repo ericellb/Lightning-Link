@@ -75,7 +75,7 @@ router.get('/user/login', async (req: Request, res: Response) => {
   const isMatch = await bcrypt.compare(userPass, hashPass);
   if (isMatch) {
     let accessToken = generateId(ACCESS_TOKEN_LENGTH);
-    sql.query(`UPDATE users SET user_access_token=${sql.escape(accessToken)}`);
+    sql.query(`UPDATE users SET user_access_token=${sql.escape(accessToken)} WHERE user_name=${sql.escape(userName)}`);
     res.status(200).send({ userName: userName, userId: response[0].user_id, userToken: response[0].user_access_token });
   } else {
     error = 'Username / Password does not match';
