@@ -35,18 +35,18 @@ export default function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <HashRouter>
-        <Route path="/" exact>
+    <HashRouter>
+      <Route path="/" exact>
+        <ThemeProvider theme={theme}>
           <Header />
           <Hero />
           <Shortener />
           <Info />
           <Footer />
-        </Route>
-        <Route path="/:slug" component={Redirect} />
-      </HashRouter>
-    </ThemeProvider>
+        </ThemeProvider>
+      </Route>
+      <Route path="/:slug" component={Redirect} />
+    </HashRouter>
   );
 }
 

@@ -85,9 +85,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+export type AuthType = 'Sign In' | 'Create Account';
+
 type AuthModalProps = {
   onModalClose: (state: boolean) => void;
   open: boolean;
+  authType: AuthType;
 };
 
 export default function AuthModal(props: AuthModalProps) {
@@ -95,7 +98,7 @@ export default function AuthModal(props: AuthModalProps) {
   const [open, setOpen] = useState(props.open);
   const [userName, setUserName] = useState('');
   const [userPass, setUserPass] = useState('');
-  const [authType, setAuthType] = useState('Sign In');
+  const [authType, setAuthType] = useState<AuthType>(props.authType);
   const [textError, setTextError] = useState(false);
   const [textMessage, setTextMessage] = useState('');
   const [textFadeShow, setTextFadeShow] = useState(false);

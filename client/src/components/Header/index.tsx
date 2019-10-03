@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, makeStyles, Container } from '@material-ui/core';
 import { OfflineBolt } from '@material-ui/icons';
-import AuthModal from '../AuthModal';
+import AuthModal, { AuthType } from '../AuthModal';
 import { StoreState } from '../../reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { signOut } from '../../actions';
@@ -31,8 +31,15 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
   const classes = useStyles({});
   const [showAuth, setShowAuth] = useState(false);
+  const [authType, setAuthType] = useState<AuthType>('Sign In');
   const dispatch = useDispatch();
   const user = useSelector((state: StoreState) => state.user);
+
+  // Handles openning auth modal
+  const handleModalOpen = (authType: AuthType) => {
+    setShowAuth(true);
+    setAuthType(authType);
+  };
 
   return (
     <AppBar position="sticky">
@@ -69,7 +76,7 @@ export default function Header() {
                 color="inherit"
                 title="Login"
                 className={classes.responsiveText}
-                onClick={() => setShowAuth(true)}
+                onClick={() => handleModalOpen('Sign In')}
               >
                 Login
               </Button>
@@ -77,7 +84,7 @@ export default function Header() {
                 color="inherit"
                 title="Sign Up"
                 className={classes.responsiveText}
-                onClick={() => setShowAuth(true)}
+                onClick={() => handleModalOpen('Create Account')}
               >
                 Sign Up
               </Button>
@@ -85,7 +92,7 @@ export default function Header() {
           )}
         </Toolbar>
       </Container>
-      {showAuth && <AuthModal onModalClose={setShowAuth} open={showAuth} />}
+      {showAuth && <AuthModal onModalClose={setShowAuth} open={showAuth} authType={authType} />}
     </AppBar>
   );
 }
