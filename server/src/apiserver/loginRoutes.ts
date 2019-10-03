@@ -88,3 +88,30 @@ router.get('/user/login', async (req: Request, res: Response) => {
     res.status(400).send(error);
   }
 });
+
+// Route to check if user is authed
+// Expects -> userName
+// Expects -> access_token in HTTP Only Cookie
+// Returns -> true or false
+router.get('/user/authed', async (req: Request, res: Response) => {
+  const { userId } = req.query;
+
+  // Check params exist
+  if (!userId) {
+    res.status(400).send('Missing UserID');
+  }
+
+  let cookies = req.headers.cookie;
+  let accessToken = '';
+  if (cookies !== undefined) {
+    let str = 'access_token';
+    let index = cookies.indexOf('access_token');
+    accessToken = cookies.slice(index + str.length + 1, cookies.length);
+  }
+
+  if (await userAuthed(userId, accessToken)) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
+});

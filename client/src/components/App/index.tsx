@@ -34,6 +34,16 @@ export default function App() {
     return <React.Fragment></React.Fragment>;
   };
 
+  // Attempts to login using user_id + cookie access token
+  // If remember me set in local storage
+  const LoginIfRememberMe = () => {
+    let rememberMe = localStorage.getItem('rememberMe');
+    if (rememberMe) {
+      // Attempt to login with cookies
+      axios.get;
+    }
+  };
+
   return (
     <HashRouter>
       <Route path="/" exact>
