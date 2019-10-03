@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles, Container, TextField, Grid, Button, List, ListItem, Fade } from '@material-ui/core';
 import axios from '../AxiosClient';
+import { StoreState } from '../../reducers';
+import { useSelector } from 'react-redux';
 
 const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'http://ltng.link/#';
 
@@ -177,6 +179,7 @@ export default function Shortener() {
   const [copySuccess, setCopySuccess] = useState(false);
   const [createdURLS, setCreatedURLS] = useState<UrlList[]>([]);
   const [buttonIndex, setButtonIndex] = useState(0);
+  const user = useSelector((state: StoreState) => state.user);
 
   // Catches enter key in TextField to submit
   const catchEnter = (e: React.KeyboardEvent) => {
@@ -215,13 +218,6 @@ export default function Shortener() {
     setTimeout(() => setTextErrorMsg(''), 3000);
   };
 
-  // Submits URL to API
-  const postURL = async (destURL: string) => {
-    destURL = encodeURIComponent(destURL);
-    let res = await axios.post(`/shorten?destination=${destURL}`);
-    return res;
-  };
-
   // Returns true or false if valid URL
   const validInput = (destURL: string) => {
     // eslint-disable-next-line
@@ -248,7 +244,12 @@ export default function Shortener() {
   const submitURL = async (destURL: string) => {
     if (!alreadyShortened(destURL)) {
       if (validInput(destURL)) {
-        let res = await postURL(destURL);
+        destURL = encodeURIComponent(destURL);
+        let endPoint = `/shorten?destination=${destURL}`;
+        if (user.isSignedIn && user.userId) {
+          endPoint += `&userId=${user.userId}`;
+        }
+        let res = await await axios.post(endPoint);
         if (res.status === 200) {
           // Show new URL under TextField, and empty it
           setCreatedURLS([...createdURLS, { slug: res.data, destination: destURL }]);
