@@ -103,8 +103,7 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
   });
 
   rows2.forEach((row: any) => {
-    let tempDate = row.visit_date.getFullYear() + '-' + row.visit_date.getMonth() + '-' + row.visit_date.getDate();
-    response.dates.push({ [tempDate]: row.visits });
+    response.dates.push({ [row.visit_date]: row.visits });
   });
 
   return response;

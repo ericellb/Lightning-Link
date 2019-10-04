@@ -136,7 +136,7 @@ export const getAccessToken = (req: Request) => {
 const formatAnalyticData = (body: any) => {
   let reqBody: geoBody = JSON.parse(body);
   let date = new Date();
-  let newDate = date.getMonth() + '-' + date.getDay() + '-' + date.getFullYear();
+  let newDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
   let requestLocation = {
     city: reqBody.city,
