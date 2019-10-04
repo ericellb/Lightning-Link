@@ -4,7 +4,7 @@ import axios from '../AxiosClient';
 import { StoreState } from '../../reducers';
 import { useSelector } from 'react-redux';
 
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'http://ltng.link/#';
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'https://ltng.link/#';
 
 const useStyles = makeStyles(theme => ({
   container: {
