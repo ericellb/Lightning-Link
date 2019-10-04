@@ -90,13 +90,20 @@ export const setAnalyticData = async (req: Request, slug: string) => {
 
   // Call Geolocation API
   request(geoURL, (err, res, body) => {
-    // Get current analytics from DB for given slug
-    sql.query(`SELECT * from urls_analytics WHERE urls_slug=${sql.escape(slug)}`, (err, rows) => {
-      let worlds = formatAnalyticData(body, rows);
-      sql.query(
-        `UPDATE urls_analytics SET visits=visits+1, worlds=${sql.escape(worlds)} WHERE urls_slug=${sql.escape(slug)}`
-      );
-    });
+    let geoAnalytics = formatAnalyticData(body);
+    sql.query(`
+    INSERT INTO analytics (slug, visit_date, visits, continent, country, state, city)
+    VALUES (
+    ${sql.escape(slug)}, 
+    ${sql.escape(geoAnalytics.date)}, 
+    "1", 
+    ${sql.escape(geoAnalytics.continent)}, 
+    ${sql.escape(geoAnalytics.country)}, 
+    ${sql.escape(geoAnalytics.state)}, 
+    ${sql.escape(geoAnalytics.city)})
+    ON DUPLICATE KEY 
+    UPDATE
+    visits = visits + 1`);
   });
 };
 
@@ -126,35 +133,20 @@ export const getAccessToken = (req: Request) => {
 };
 
 // Formats the Analytic Data and returns as json string
-const formatAnalyticData = (body: any, rows: any) => {
+const formatAnalyticData = (body: any) => {
   let reqBody: geoBody = JSON.parse(body);
-  let worlds: analyticData[] = JSON.parse(rows[0].worlds);
+  let date = new Date();
+  let newDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
   let requestLocation = {
     city: reqBody.city,
+    state: reqBody.state_prov,
     country: reqBody.country_name,
     continent: reqBody.continent_code,
-    visits: '1'
+    date: newDate
   };
 
-  let foundCity = false;
-
-  // If entry exists, update the visits value
-  worlds.find(entry => {
-    if (entry.city === requestLocation.city) {
-      let tempVisits = parseInt(entry.visits);
-      tempVisits++;
-      entry.visits = tempVisits.toString();
-      foundCity = true;
-    }
-  });
-
-  // If entry doesnt exist, insert it
-  if (!foundCity) {
-    worlds.push(requestLocation);
-  }
-
-  return JSON.stringify(worlds);
+  return requestLocation;
 };
 
 // Interface for geolocation response data
