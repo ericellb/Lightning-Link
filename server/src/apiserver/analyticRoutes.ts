@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { connection as sql } from '../db';
 import { getUniqueId, userAuthed, getAccessToken } from './utils';
-import { string } from 'prop-types';
 
 export let router = express.Router();
 
