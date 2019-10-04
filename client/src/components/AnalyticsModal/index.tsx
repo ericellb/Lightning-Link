@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, makeStyles } from '@material-ui/core';
+import axios from '../AxiosClient';
 
 const useStyles = makeStyles(theme => ({
   modalContainer: {
@@ -38,6 +39,13 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
     props.onModalClose(state);
     setOpen(state);
   };
+
+  // Gets all of the URL this user is the Creator of
+  useEffect(() => {
+    try {
+      axios.get('/analytic');
+    } catch (err) {}
+  }, []);
 
   return (
     <Modal

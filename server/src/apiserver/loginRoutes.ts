@@ -2,7 +2,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { connection as sql } from '../db';
-import { getUniqueId, generateId, userAuthed } from './utils';
+import { getUniqueId, generateId, userAuthed, getAccessToken } from './utils';
 
 export let router = express.Router();
 
@@ -112,13 +112,7 @@ router.post('/user/logout', async (req: Request, res: Response) => {
     res.status(400).send('Missing UserID');
   }
 
-  let cookies = req.headers.cookie;
-  let accessToken = '';
-  if (cookies !== undefined) {
-    let str = 'access_token';
-    let index = cookies.indexOf('access_token');
-    accessToken = cookies.slice(index + str.length + 1, cookies.length);
-  }
+  let accessToken = getAccessToken(req);
 
   if (await userAuthed(userId, accessToken)) {
     sql.query(`UPDATE users set user_access_token="" WHERE user_id=${sql.escape(userId)}`);
@@ -140,14 +134,7 @@ router.get('/user/authed', async (req: Request, res: Response) => {
     res.status(400).send('Missing UserID');
   }
 
-  let cookies = req.headers.cookie;
-  console.log(cookies);
-  let accessToken = '';
-  if (cookies !== undefined) {
-    let str = 'access_token';
-    let index = cookies.indexOf('access_token');
-    accessToken = cookies.slice(index + str.length + 1, cookies.length);
-  }
+  let accessToken = getAccessToken(req);
 
   if (await userAuthed(userId, accessToken)) {
     res.send(true);
