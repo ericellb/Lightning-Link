@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, makeStyles, TextField, Typography, Button, Fade, Checkbox } from '@material-ui/core';
+import { Modal, makeStyles, TextField, Typography, Button, Fade, Checkbox, FormControlLabel } from '@material-ui/core';
 import axios from '../AxiosClient';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../actions';
@@ -84,7 +84,8 @@ const useStyles = makeStyles(theme => ({
     color: '#fefefe'
   },
   rememberMeContainer: {
-    marginRight: 'auto'
+    marginRight: 'auto',
+    marginLeft: '8px'
   },
   rememberMeCheck: {
     color: '#1b3987',
@@ -225,14 +226,18 @@ export default function AuthModal(props: AuthModalProps) {
           }}
         />
         <div className={classes.rememberMeContainer}>
-          <Checkbox
-            checked={rememberMe}
-            value="rememberMe"
-            onChange={() => setRememberMe(!rememberMe)}
-            className={classes.rememberMeCheck}
-            color="default"
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={rememberMe}
+                value="rememberMe"
+                className={classes.rememberMeCheck}
+                color="default"
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+            }
+            label="Remember Me"
           />
-          Remember me
         </div>
         {textMessage !== '' && (
           <Fade in={textFadeShow}>
