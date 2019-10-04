@@ -81,7 +81,7 @@ export default function App() {
   );
 }
 
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {

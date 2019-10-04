@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { Modal, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Modal, List, ListItem, makeStyles, Divider, Typography } from '@material-ui/core';
 import axios from '../AxiosClient';
+import { StoreState } from '../../reducers';
+import { useSelector } from 'react-redux';
+import { Timeline } from '@material-ui/icons';
+
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'https://ltng.link/#';
 
 const useStyles = makeStyles(theme => ({
   modalContainer: {
@@ -9,7 +14,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   analyticsContainer: {
-    width: '340px',
     backgroundColor: '#fefefe',
     display: 'flex',
     flexWrap: 'wrap',
@@ -22,6 +26,30 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       width: '90%'
     }
+  },
+  listContainer: {
+    width: '100%'
+  },
+  listItem: {
+    justifyContent: 'space-between',
+    paddingTop: '12px',
+    paddingBottom: '12px'
+  },
+  itemListSlugContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  itemListSlug: {
+    marginRight: '8px'
+  },
+  itemListSlugIcon: {
+    height: '32px',
+    width: '32px',
+    cursor: 'pointer'
+  },
+  listItemDivider: {
+    backgroundColor: 'grey'
   }
 }));
 
@@ -30,9 +58,16 @@ type AnalyticsModalProps = {
   open: boolean;
 };
 
+interface SlugsData {
+  slug: string;
+  destination: string;
+}
+
 export default function AnalyticsModal(props: AnalyticsModalProps) {
   const [open, setOpen] = useState(props.open);
+  const [urls, setUrls] = useState<SlugsData[]>([]);
   const classes = useStyles({});
+  const user = useSelector((state: StoreState) => state.user);
 
   // Handles closing modal
   const handleModalClose = (state: boolean) => {
@@ -42,9 +77,22 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
 
   // Gets all of the URL this user is the Creator of
   useEffect(() => {
-    try {
-      axios.get('/analytic');
-    } catch (err) {}
+    const getCreatorSlugs = async () => {
+      try {
+        let endpointURL = `/analytic/all?userId=${user.userId}`;
+        let res = await axios.get(endpointURL, { withCredentials: true });
+        if (res.status === 200) {
+          setUrls(res.data);
+        }
+      } catch (err) {}
+    };
+
+    // If user signed in, get all slugs he owns
+    if (user.isSignedIn && user.userId) {
+      getCreatorSlugs();
+    } else {
+      handleModalClose(false);
+    }
   }, []);
 
   return (
@@ -55,7 +103,25 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
       onClose={() => handleModalClose(false)}
       className={classes.modalContainer}
     >
-      <div className={classes.analyticsContainer}>Some Analytics</div>
+      <div className={classes.analyticsContainer}>
+        <Typography variant="h5">View Analytics</Typography>
+        <List className={classes.listContainer}>
+          {urls.map((url, i) => {
+            return (
+              <React.Fragment>
+                <ListItem className={classes.listItem} button>
+                  <div>{url.destination}</div>
+                  <div className={classes.itemListSlugContainer}>
+                    <div className={classes.itemListSlug}>{baseUrl + '/' + url.slug}</div>
+                    <Timeline className={classes.itemListSlugIcon} />
+                  </div>
+                </ListItem>
+                {i < urls.length - 1 && <Divider className={classes.listItemDivider} />}
+              </React.Fragment>
+            );
+          })}
+        </List>
+      </div>
     </Modal>
   );
 }
