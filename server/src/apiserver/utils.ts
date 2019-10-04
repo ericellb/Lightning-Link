@@ -15,6 +15,9 @@ export const userExists = async (userId: string) => {
 };
 
 export const userAuthed = async (userId: string, userToken: string) => {
+  if (userToken === '') {
+    return false;
+  }
   const sqlQuery = `SELECT * from users where user_id = ${sql.escape(userId)}`;
   let response: any = await sql.query(sqlQuery);
   if (response[0] !== undefined && response[0].user_access_token === userToken) return true;
