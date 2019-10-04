@@ -1,8 +1,9 @@
-import express from 'express';
+import express, { response } from 'express';
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { connection as sql } from '../db';
 import { getUniqueId, userAuthed, getAccessToken } from './utils';
+import { string } from 'prop-types';
 
 export let router = express.Router();
 
@@ -33,38 +34,84 @@ router.get('/analytic/all', async (req: Request, res: Response) => {
 router.get('/analytic/:slug', async (req: Request, res: Response) => {
   const { slug } = req.params;
   const { userId } = req.query;
+  let { days } = req.query;
+
+  // Default days to 7 if not given
+  if (!days) {
+    days = 7;
+  }
 
   let accessToken = getAccessToken(req);
 
   if (await userAuthed(userId, accessToken)) {
-    if (await userCreatedRoute(slug, userId)) {
-      res.send(await getAnalyticData(slug, userId));
-    } else {
-      res.status(401).send('Unauthorized Route');
-    }
+    let analyticData = await getAnalyticData(slug, userId, days);
+    res.send(analyticData);
   } else {
     res.status(401).send('Unauthorized Route');
   }
 });
 
-// Check if user created that specific slug
-const userCreatedRoute = async (slug: string, userId: string) => {
-  let rows = await getUrlAnalytic(slug, userId);
-  if (rows[0] !== undefined) {
-    return true;
-  } else {
-    return false;
-  }
+// Gets Base analytic data for a specific slug (short url)
+// Returns data in following format for last n days
+// {
+//   total_visits: "10",
+//   "continent": [
+//     {"NA": "5"},
+//     {"EU" : "5"}
+//   ],
+//   "dates": [
+//     {"Oct 25 2019": "5"},
+//     {"Oct 26 2019": "5"}
+//   ]
+// }
+const getAnalyticData = async (slug: string, userId: string, days: number) => {
+  // Get
+  let totalVisits = `SELECT SUM(visits) as visits FROM analytics WHERE slug=${sql.escape(slug)} 
+  UNION ALL `;
+  let continents = ['AF', 'AN', 'AS', 'EU', 'NA', 'OC', 'SA'];
+  let continentVisits = '';
+  continents.forEach((continent, i) => {
+    continentVisits += `SELECT SUM(b.visits) FROM urls_analytics AS a 
+    JOIN analytics AS b ON a.urls_slug = b.slug 
+    WHERE creator_user_id=${sql.escape(userId)} AND a.urls_slug=${sql.escape(slug)} AND b.continent=${sql.escape(
+      continent
+    )}`;
+    if (i !== continents.length - 1) {
+      continentVisits += ` 
+      UNION ALL `;
+    }
+  });
+  let lastNDays = `SELECT b.visit_date, b.visits FROM urls_analytics AS a 
+  JOIN analytics AS b ON a.urls_slug = b.slug 
+  WHERE creator_user_id=${sql.escape(userId)} 
+  AND a.urls_slug=${sql.escape(slug)} AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)`;
+
+  let rows: any = await sql.query(totalVisits + continentVisits);
+  let rows2: any = await sql.query(lastNDays);
+
+  let response = <AnalyticData>{};
+  response.continents = [];
+  response.dates = [];
+
+  // Populate response with total visits + each continent
+  rows.forEach((row: any, i: number) => {
+    if (row.visits !== null && i == 0) {
+      response.totalVisits = row.visits;
+    } else if (row.visits !== null) {
+      response.continents.push({ [continents[i - 1]]: row.visits });
+    }
+  });
+
+  rows2.forEach((row: any) => {
+    let tempDate = row.visit_date.getFullYear() + '-' + row.visit_date.getMonth() + '-' + row.visit_date.getDate();
+    response.dates.push({ [tempDate]: row.visits });
+  });
+
+  return response;
 };
 
-const getAnalyticData = async (slug: string, userId: string) => {
-  let rows = await getUrlAnalytic(slug, userId);
-  return rows[0];
-};
-
-const getUrlAnalytic = async (slug: string, userId: string) => {
-  let rows: any = await sql.query(
-    `SELECT * from urls_analytics WHERE creator_user_id=${sql.escape(userId)} AND urls_slug=${sql.escape(slug)}`
-  );
-  return rows;
-};
+interface AnalyticData {
+  continents: { [continent: string]: number }[];
+  dates: { [date: string]: number }[];
+  totalVisits: number;
+}
