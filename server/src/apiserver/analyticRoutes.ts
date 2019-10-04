@@ -19,9 +19,9 @@ router.get('/analytic/all', async (req: Request, res: Response) => {
   // Protected route, make sure user is authed
   if (await userAuthed(userId, accessToken)) {
     let rows: any = await sql.query(`SELECT * FROM urls_analytics WHERE creator_user_id=${sql.escape(userId)}`);
-    let slugs: String[] = [];
+    let slugs: { slug: string; destination: string }[] = [];
     rows.forEach((row: any, i: number) => {
-      slugs[i] = row.urls_slug;
+      slugs[i] = { slug: row.urls_slug, destination: row.urls_destination };
     });
     res.send(slugs);
   } else {

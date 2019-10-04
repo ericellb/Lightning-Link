@@ -111,6 +111,20 @@ export const generateId = (length: number) => {
   return result;
 };
 
+// Gets access token from Http only cookie
+export const getAccessToken = (req: Request) => {
+  let cookies = req.headers.cookie;
+  let accessToken = '';
+  if (cookies !== undefined) {
+    let str = 'access_token';
+    let index = cookies.indexOf('access_token');
+    accessToken = cookies.slice(index + str.length + 1, cookies.length);
+    return accessToken;
+  } else {
+    return '';
+  }
+};
+
 // Formats the Analytic Data and returns as json string
 const formatAnalyticData = (body: any, rows: any) => {
   let reqBody: geoBody = JSON.parse(body);

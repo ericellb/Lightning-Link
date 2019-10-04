@@ -80,8 +80,8 @@ export const getShortURL = (count: number, destination: string, userId: string |
   // Only creator of URL can view analytics on a url
   if (userId) {
     sql.query(
-      `INSERT INTO urls_analytics (urls_slug, creator_user_id, visits, worlds) 
-       VALUES (${sql.escape(slug)}, ${sql.escape(userId)}, 0, '[]')`
+      `INSERT INTO urls_analytics (urls_slug, urls_destination, creator_user_id, visits, worlds) 
+       VALUES (${sql.escape(slug)}, ${sql.escape(destination)}, ${sql.escape(userId)}, 0, '[]')`
     );
   }
 
