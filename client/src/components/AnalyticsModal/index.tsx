@@ -4,6 +4,8 @@ import axios from '../AxiosClient';
 import { StoreState } from '../../reducers';
 import { useSelector } from 'react-redux';
 import { Timeline } from '@material-ui/icons';
+import { AnalyticData } from './types';
+import AnalyticChart from './AnalyticChart';
 
 const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/#' : 'https://ltng.link/#';
 
@@ -66,6 +68,8 @@ interface SlugsData {
 export default function AnalyticsModal(props: AnalyticsModalProps) {
   const [open, setOpen] = useState(props.open);
   const [urls, setUrls] = useState<SlugsData[]>([]);
+  const [showChart, setShowChart] = useState(false);
+  const [analyticData, setAnalyticData] = useState<AnalyticData>();
   const classes = useStyles({});
   const user = useSelector((state: StoreState) => state.user);
 
@@ -95,6 +99,19 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
     }
   }, []);
 
+  // Gets analytic data for a specific slug (short url)
+  const getAnalyticData = async (slug: string) => {
+    try {
+      let endpointURL = `/analytic/${slug}?userId=${user.userId}`;
+      let res = await axios.get(endpointURL, { withCredentials: true });
+      if (res.status === 200) {
+        let analyticDataRes: AnalyticData = res.data;
+        setShowChart(true);
+        setAnalyticData(analyticDataRes);
+      }
+    } catch (err) {}
+  };
+
   return (
     <Modal
       aria-labelledby="authentication-modal"
@@ -105,22 +122,26 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
     >
       <div className={classes.analyticsContainer}>
         <Typography variant="h5">View Analytics</Typography>
-        <List className={classes.listContainer}>
-          {urls.map((url, i) => {
-            return (
-              <React.Fragment>
-                <ListItem className={classes.listItem} button>
-                  <div>{url.destination}</div>
-                  <div className={classes.itemListSlugContainer}>
-                    <div className={classes.itemListSlug}>{baseUrl + '/' + url.slug}</div>
-                    <Timeline className={classes.itemListSlugIcon} />
-                  </div>
-                </ListItem>
-                {i < urls.length - 1 && <Divider className={classes.listItemDivider} />}
-              </React.Fragment>
-            );
-          })}
-        </List>
+        {showChart && analyticData ? (
+          <AnalyticChart analyticData={analyticData} />
+        ) : (
+          <List className={classes.listContainer}>
+            {urls.map((url, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <ListItem className={classes.listItem} button onClick={() => getAnalyticData(url.slug)}>
+                    <div>{url.destination}</div>
+                    <div className={classes.itemListSlugContainer}>
+                      <div className={classes.itemListSlug}>{baseUrl + '/' + url.slug}</div>
+                      <Timeline className={classes.itemListSlugIcon} />
+                    </div>
+                  </ListItem>
+                  {i < urls.length - 1 && <Divider className={classes.listItemDivider} />}
+                </React.Fragment>
+              );
+            })}
+          </List>
+        )}
       </div>
     </Modal>
   );
