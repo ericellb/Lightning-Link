@@ -89,7 +89,7 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
   let rows2: any = await sql.query(lastNDays);
 
   let response = <AnalyticData>{};
-  response.continents = [];
+  response.location = [];
   response.dates = [];
 
   // Populate response with total visits + each continent
@@ -97,19 +97,19 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
     if (row.visits !== null && i == 0) {
       response.totalVisits = row.visits;
     } else if (row.visits !== null) {
-      response.continents.push({ [continents[i - 1]]: row.visits });
+      response.location.push({ location: continents[i - 1], visits: row.visits });
     }
   });
 
   rows2.forEach((row: any) => {
-    response.dates.push({ [row.visit_date]: row.visits });
+    response.dates.push({ date: row.visit_date, visits: row.visits });
   });
 
   return response;
 };
 
 interface AnalyticData {
-  continents: { [continent: string]: number }[];
-  dates: { [date: string]: number }[];
+  location: { location: string; visits: number }[];
+  dates: { date: string; visits: number }[];
   totalVisits: number;
 }
