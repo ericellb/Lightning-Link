@@ -19,7 +19,7 @@ Implemented Features
 - [x] Basic Scalable URL Shortener Backend
 - [x] Backend Analytics (See visits, geographic data etc..)
 - [x] Frontend for URL Shortener
-- [ ] Frontend Auth + Analytics (Working on it..)
+- [x] Frontend Auth + Analytics (Working on it..)
 
 Planned Features
 
