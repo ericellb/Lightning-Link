@@ -79,16 +79,16 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
     userId = '7RF6Uza';
   }
 
-  let totalVisits = `SELECT SUM(visits) as visits FROM analytics WHERE slug=${sql.escape(slug)} 
+  let totalVisits = `SELECT SUM(visits) as visits FROM analytics WHERE BINARY slug=${sql.escape(slug)} 
   UNION ALL `;
   let continents = ['AF', 'AN', 'AS', 'EU', 'NA', 'OC', 'SA'];
   let continentVisits = '';
   continents.forEach((continent, i) => {
     continentVisits += `SELECT SUM(b.visits) FROM urls_analytics AS a 
     JOIN analytics AS b ON a.urls_slug = b.slug 
-    WHERE creator_user_id=${sql.escape(userId)} AND a.urls_slug=${sql.escape(slug)} AND b.continent=${sql.escape(
-      continent
-    )}`;
+    WHERE BINARY creator_user_id=${sql.escape(userId)} AND BINARY a.urls_slug=${sql.escape(
+      slug
+    )} AND b.continent=${sql.escape(continent)}`;
     if (i !== continents.length - 1) {
       continentVisits += ` 
       UNION ALL `;
@@ -96,8 +96,8 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
   });
   let lastNDays = `SELECT b.visit_date, b.visits FROM urls_analytics AS a 
   JOIN analytics AS b ON a.urls_slug = b.slug 
-  WHERE creator_user_id=${sql.escape(userId)} 
-  AND a.urls_slug=${sql.escape(slug)} AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)`;
+  WHERE BINARY creator_user_id=${sql.escape(userId)} 
+  AND BINARY a.urls_slug=${sql.escape(slug)} AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)`;
 
   let rows: any = await sql.query(totalVisits + continentVisits);
   let rows2: any = await sql.query(lastNDays);
@@ -149,8 +149,8 @@ const getAnalyticLocationData = async (slug: string, userId: string, days: numbe
     locationRequest
   )} as location FROM urls_analytics AS a 
   JOIN analytics AS b ON a.urls_slug = b.slug 
-  WHERE creator_user_id=${sql.escape(userId)} 
-  AND a.urls_slug=${sql.escape(slug)} 
+  WHERE BINARY creator_user_id=${sql.escape(userId)} 
+  AND BINARY a.urls_slug=${sql.escape(slug)} 
   AND b.${sql.escapeId(type)}=${sql.escape(location)}
   AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)
   GROUP BY b.${sql.escapeId(locationRequest)}`;
@@ -163,8 +163,8 @@ const getAnalyticLocationData = async (slug: string, userId: string, days: numbe
       locationRequest
     )} as location FROM urls_analytics AS a 
   JOIN analytics AS b ON a.urls_slug = b.slug 
-  WHERE creator_user_id=${sql.escape(userId)} 
-  AND a.urls_slug=${sql.escape(slug)} 
+  WHERE BINARY creator_user_id=${sql.escape(userId)} 
+  AND BINARY a.urls_slug=${sql.escape(slug)} 
   AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)
   GROUP BY b.${sql.escapeId(locationRequest)}`;
   }
