@@ -252,7 +252,7 @@ export default function Shortener() {
         let res = await await axios.post(endPoint);
         if (res.status === 200) {
           // Show new URL under TextField, and empty it
-          setCreatedURLS([...createdURLS, { slug: res.data, destination: destURL }]);
+          setCreatedURLS([...createdURLS, { slug: res.data, destination: decodeURIComponent(destURL) }]);
           setDestURL('');
         } else {
           showErrorMessage(`Server Error : ${res.status}. Hang in tight, were working on it!`);
