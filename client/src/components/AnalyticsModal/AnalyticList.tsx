@@ -7,12 +7,17 @@ import { StoreState } from '../../reducers';
 
 const useStyles = makeStyles(theme => ({
   analyticListContainer: {
-    flexBasis: '20%',
+    width: '20%',
     paddingLeft: '8px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    [theme.breakpoints.down('xs')]: {
+      flexBasis: '100%',
+      width: '100%',
+      paddingTop: '16px'
+    }
   },
   listTitle: {
-    textAlign: 'center'
+    paddingLeft: '16px'
   },
   listContainer: {
     width: '100%'

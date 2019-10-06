@@ -8,9 +8,11 @@ const useStyles = makeStyles(theme => ({
   chartContainer: {
     display: 'flex',
     justifyContent: 'center',
-    flexBasis: '80%',
-    paddingRight: '8px',
-    boxSizing: 'border-box'
+    width: '80%',
+    [theme.breakpoints.down('xs')]: {
+      flexBasis: '100%',
+      width: '100%'
+    }
   },
   analyticChart: {
     background: 'whitesmoke',
@@ -29,6 +31,7 @@ export default function AnalyticChart(props: AnalyticChartProps) {
 
   // Component did mount, mount the Chart onto canvas
   useEffect(() => {
+    // Setup the Chart
     let myChartRef;
     if (analyticChartRef.current) {
       myChartRef = analyticChartRef.current.getContext('2d');
@@ -45,7 +48,7 @@ export default function AnalyticChart(props: AnalyticChartProps) {
 
     // Populate Date Labels
     sortedDates.forEach(entry => {
-      let tempDate = moment(entry.date).format('MMMM Do YYYY');
+      let tempDate = moment(entry.date).format('MMM Do YY');
       dateLabels.push(tempDate);
     });
 
@@ -82,6 +85,7 @@ export default function AnalyticChart(props: AnalyticChartProps) {
       },
       options: {
         //Customize chart options
+        responsive: true
       }
     });
   }, []);

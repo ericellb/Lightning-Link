@@ -34,7 +34,12 @@ const useStyles = makeStyles(theme => ({
   analyticDataContainer: {},
   analyticsTitle: {
     flexBasis: '100%',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: '16px',
+    fontSize: '24px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '18px'
+    }
   },
   listContainer: {
     width: '100%'
@@ -42,20 +47,31 @@ const useStyles = makeStyles(theme => ({
   listItem: {
     justifyContent: 'space-between',
     paddingTop: '12px',
-    paddingBottom: '12px'
+    paddingBottom: '12px',
+    display: 'flex',
+    flexWrap: 'wrap'
   },
   itemListSlugContainer: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'wrap'
   },
   itemListSlug: {
-    marginRight: '8px'
+    marginRight: '8px',
+    paddingBottom: '8px',
+    boxSizing: 'border-box'
   },
   itemListSlugIcon: {
     height: '32px',
     width: '32px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    paddingBottom: '8px'
+  },
+  itemListDestContainer: {
+    paddingBottom: '8px',
+    paddingTop: '8px',
+    boxSizing: 'border-box'
   },
   listItemDivider: {
     backgroundColor: 'grey'
@@ -135,8 +151,8 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
         {showChart && analyticData ? (
           <React.Fragment>
             <div className={classes.analyticsTitle}>
-              <Typography variant="h5">{dest + ' '}</Typography>
-              <Typography variant="h5">{baseUrl + '/' + slug}</Typography>
+              <div>{dest + ' '}</div>
+              <div>{baseUrl + '/' + slug}</div>
             </div>
             <AnalyticChart chartData={analyticData.dates} />
             <AnalyticList listData={analyticData.location} slug={slug} />
@@ -153,7 +169,7 @@ export default function AnalyticsModal(props: AnalyticsModalProps) {
                       button
                       onClick={() => getAnalyticData(url.slug, url.destination)}
                     >
-                      <div>{url.destination}</div>
+                      <div className={classes.itemListDestContainer}>{url.destination}</div>
                       <div className={classes.itemListSlugContainer}>
                         <div className={classes.itemListSlug}>{baseUrl + '/' + url.slug}</div>
                         <Timeline className={classes.itemListSlugIcon} />
