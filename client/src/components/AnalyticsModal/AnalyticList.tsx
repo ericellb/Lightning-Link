@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { makeStyles, List, ListItem, Typography } from '@material-ui/core';
+import { makeStyles, List, ListItem, IconButton } from '@material-ui/core';
 import { ListData } from './types';
 import axios from '../AxiosClient';
 import { useSelector } from 'react-redux';
 import { StoreState } from '../../reducers';
+import { ArrowBack } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   analyticListContainer: {
-    width: '20%',
+    width: '25%',
     paddingLeft: '8px',
     boxSizing: 'border-box',
     [theme.breakpoints.down('xs')]: {
@@ -17,10 +18,18 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listTitle: {
-    paddingLeft: '16px'
+    display: 'flex',
+    alignItems: 'center'
+  },
+  listTitleIcon: {
+    padding: '0px',
+    paddingRight: '6px',
+    color: 'black'
   },
   listContainer: {
-    width: '100%'
+    width: '100%',
+    paddingLeft: '16px',
+    boxSizing: 'border-box'
   },
   listItemLocation: {},
   listItemVisits: {}
@@ -35,10 +44,14 @@ interface AnalyticListProps {
 export default function AnalyticList(props: AnalyticListProps) {
   const user = useSelector((state: StoreState) => state.user);
   const [listData, setListData] = useState(props.listData);
-  const [locationType, setLocationType] = useState('Continent');
+  const [curLocation, setCurLocation] = useState({ type: 'Continent', location: 'NA' });
+  const [rootLocation, setRootLocation] = useState({
+    type: props.listData[0].type,
+    location: 'none'
+  });
   const classes = useStyles({});
 
-  // Gets
+  // Gets Location data for a specific location
   const getAnalyticLocationData = async (location: string, type: string) => {
     if (type !== 'city') {
       try {
@@ -47,7 +60,7 @@ export default function AnalyticList(props: AnalyticListProps) {
         if (res.status === 200) {
           setListData(res.data);
           let temp = res.data[0].type.charAt(0).toUpperCase() + res.data[0].type.slice(1);
-          setLocationType(temp);
+          setCurLocation({ type: temp, location: res.data[0].location });
         }
       } catch (err) {}
     }
@@ -55,7 +68,16 @@ export default function AnalyticList(props: AnalyticListProps) {
 
   return (
     <div className={classes.analyticListContainer}>
-      <div className={classes.listTitle}> Views by {locationType}</div>
+      <div className={classes.listTitle}>
+        <IconButton
+          aria-label="back"
+          className={classes.listTitleIcon}
+          onClick={() => getAnalyticLocationData(rootLocation.location, rootLocation.type)}
+        >
+          <ArrowBack />
+        </IconButton>
+        Views by {curLocation.type}
+      </div>
       <List className={classes.listContainer}>
         {listData.map(entry => {
           return (

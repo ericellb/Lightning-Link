@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
   chartContainer: {
     display: 'flex',
     justifyContent: 'center',
-    width: '80%',
+    width: '75%',
     [theme.breakpoints.down('xs')]: {
       flexBasis: '100%',
       width: '100%'
