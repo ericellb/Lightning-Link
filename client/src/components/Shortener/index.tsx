@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   urlList: {
-    order: 3,
+    order: 4,
     width: 'calc(100% - 24px)',
     maxWidth: '1240px',
     backgroundColor: '#FEFEFE',
@@ -163,6 +163,14 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     fontFamily: 'Roboto',
     textAlign: 'center'
+  },
+  disclaimer: {
+    order: 3,
+    padding: '8px',
+    paddingLeft: '16px',
+    paddingBottom: '16px',
+    fontSize: '12px',
+    marginRight: 'auto'
   }
 }));
 
@@ -307,6 +315,7 @@ export default function Shortener() {
               Shorten
             </Button>
           </Grid>
+          <div className={classes.disclaimer}>* Must be Signed for Analytics on your Lightning Link</div>
 
           {textErrorMsg !== '' && (
             <Grid item xs={12} className={classes.errorGrid}>
