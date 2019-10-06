@@ -133,7 +133,9 @@ const getAnalyticLocationData = async (slug: string, userId: string, days: numbe
     return;
   }
 
-  let locationQuery = `SELECT SUM(b.visits) as visits, b.${sql.escapeId(
+  let locationQuery = '';
+
+  locationQuery = `SELECT SUM(b.visits) as visits, b.${sql.escapeId(
     locationRequest
   )} as location FROM urls_analytics AS a 
   JOIN analytics AS b ON a.urls_slug = b.slug 
@@ -142,6 +144,20 @@ const getAnalyticLocationData = async (slug: string, userId: string, days: numbe
   AND b.${sql.escapeId(type)}=${sql.escape(location)}
   AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)
   GROUP BY b.${sql.escapeId(locationRequest)}`;
+
+  if (location === 'none') {
+    locationRequest = 'continent';
+    type = 'continent';
+    location = 'continent';
+    locationQuery = `SELECT SUM(b.visits) as visits, b.${sql.escapeId(
+      locationRequest
+    )} as location FROM urls_analytics AS a 
+  JOIN analytics AS b ON a.urls_slug = b.slug 
+  WHERE creator_user_id=${sql.escape(userId)} 
+  AND a.urls_slug=${sql.escape(slug)} 
+  AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)
+  GROUP BY b.${sql.escapeId(locationRequest)}`;
+  }
 
   let rows: any = await sql.query(locationQuery);
   let response: LocationData[] = [];
