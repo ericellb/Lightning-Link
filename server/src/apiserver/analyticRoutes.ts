@@ -23,6 +23,7 @@ router.get('/analytic/all', async (req: Request, res: Response) => {
     rows.forEach((row: any, i: number) => {
       slugs[i] = { slug: row.urls_slug, destination: row.urls_destination };
     });
+    slugs.push({ slug: '0008oip', destination: 'reddit.com/r/javascript' });
     res.send(slugs);
   } else {
     res.status(401).send('Unauthorized Route');
@@ -73,7 +74,11 @@ router.get('/analytic/:slug/:location', async (req: Request, res: Response) => {
 
 // Gets Base analytic data for a specific slug (short url) (Total Visits + Base Location + Dates)
 const getAnalyticData = async (slug: string, userId: string, days: number) => {
-  // Get
+  // Allow all users to see a "default" slug to play around with analytics
+  if (slug === '0008oip') {
+    userId = '7RF6Uza';
+  }
+
   let totalVisits = `SELECT SUM(visits) as visits FROM analytics WHERE slug=${sql.escape(slug)} 
   UNION ALL `;
   let continents = ['AF', 'AN', 'AS', 'EU', 'NA', 'OC', 'SA'];
@@ -119,6 +124,11 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
 
 // Gets and formats Analytical data on a specific location
 const getAnalyticLocationData = async (slug: string, userId: string, days: number, location: string, type: string) => {
+  // Allow all users to see a "default" slug to play around with analytics
+  if (slug === '0008oip') {
+    userId = '7RF6Uza';
+  }
+
   // Type to search
   let locationTypes = ['continent', 'country', 'state', 'city'];
   let locationRequest: string | undefined;
