@@ -92,7 +92,7 @@ export const getShortURL = (count: number, destination: string, userId: string |
 // Returns the original URL given a slug (shortURL)
 export const getOriginalURL = async (req: Request, slug: string): Promise<string | null> => {
   // Query our Database for given slug
-  let rows: any = await sql.query(`SELECT * FROM urls WHERE slug=${sql.escape(slug)}`);
+  let rows: any = await sql.query(`SELECT * FROM urls WHERE BINARY slug=${sql.escape(slug)}`);
 
   // We found an entry
   if (rows[0]) {
