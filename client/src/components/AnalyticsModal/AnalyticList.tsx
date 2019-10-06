@@ -46,7 +46,7 @@ export default function AnalyticList(props: AnalyticListProps) {
   const [listData, setListData] = useState(props.listData);
   const [curLocation, setCurLocation] = useState({ type: 'Continent', location: 'NA' });
   const [rootLocation, setRootLocation] = useState({
-    type: props.listData[0].type,
+    type: 'continent',
     location: 'none'
   });
   const classes = useStyles({});
