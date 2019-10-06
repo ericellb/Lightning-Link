@@ -12,15 +12,18 @@ Analytic data is provided to the Creator of the short URL showing the Geo locati
 
 ![layout image](layout2.png)
 
+![layout image](analytics.png)
+
 Implemented Features
 
 - [x] Basic Scalable URL Shortener Backend
 - [x] Backend Analytics (See visits, geographic data etc..)
 - [x] Frontend for URL Shortener
+- [ ] Frontend Auth + Analytics (Working on it..)
 
 Planned Features
 
-- [ ] Frontend Auth + Analytics (Working on it..)
+- [ ] Optimization + Design Tweaks
 
 ---
 
