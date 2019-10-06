@@ -50,19 +50,28 @@ router.get('/analytic/:slug', async (req: Request, res: Response) => {
   }
 });
 
-// Gets Base analytic data for a specific slug (short url)
-// Returns data in following format for last n days
-// {
-//   total_visits: "10",
-//   "continent": [
-//     {"NA": "5"},
-//     {"EU" : "5"}
-//   ],
-//   "dates": [
-//     {"Oct 25 2019": "5"},
-//     {"Oct 26 2019": "5"}
-//   ]
-// }
+// Gets additional analytics on location for a specific Shortened URL
+router.get('/analytic/:slug/:location', async (req: Request, res: Response) => {
+  const { slug, location } = req.params;
+  const { userId, type } = req.query;
+  let { days } = req.query;
+
+  // Default days to 7 if not given
+  if (!days) {
+    days = 7;
+  }
+
+  let accessToken = getAccessToken(req);
+
+  if (await userAuthed(userId, accessToken)) {
+    let analyticData = await getAnalyticLocationData(slug, userId, days, location, type);
+    res.send(analyticData);
+  } else {
+    res.status(401).send('Unauthorized Route');
+  }
+});
+
+// Gets Base analytic data for a specific slug (short url) (Total Visits + Base Location + Dates)
 const getAnalyticData = async (slug: string, userId: string, days: number) => {
   // Get
   let totalVisits = `SELECT SUM(visits) as visits FROM analytics WHERE slug=${sql.escape(slug)} 
@@ -97,7 +106,7 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
     if (row.visits !== null && i == 0) {
       response.totalVisits = row.visits;
     } else if (row.visits !== null) {
-      response.location.push({ location: continents[i - 1], visits: row.visits });
+      response.location.push({ location: continents[i - 1], visits: row.visits, type: 'continent' });
     }
   });
 
@@ -108,8 +117,49 @@ const getAnalyticData = async (slug: string, userId: string, days: number) => {
   return response;
 };
 
+// Gets and formats Analytical data on a specific location
+const getAnalyticLocationData = async (slug: string, userId: string, days: number, location: string, type: string) => {
+  // Type to search
+  let locationTypes = ['continent', 'country', 'state', 'city'];
+  let locationRequest: string | undefined;
+  for (let i = 0; i < locationTypes.length; i++) {
+    if (locationTypes[i] === type) {
+      locationRequest = locationTypes[i + 1];
+    }
+  }
+
+  // If city, we cant get any more data (frotnend should check for this too)
+  if (typeof locationRequest === 'undefined') {
+    return;
+  }
+
+  let locationQuery = `SELECT SUM(b.visits) as visits, b.${sql.escapeId(
+    locationRequest
+  )} as location FROM urls_analytics AS a 
+  JOIN analytics AS b ON a.urls_slug = b.slug 
+  WHERE creator_user_id=${sql.escape(userId)} 
+  AND a.urls_slug=${sql.escape(slug)} 
+  AND b.${sql.escapeId(type)}=${sql.escape(location)}
+  AND b.visit_date >= (DATE(NOW()) - INTERVAL ${sql.escape(days)} DAY)
+  GROUP BY b.${sql.escapeId(locationRequest)}`;
+
+  let rows: any = await sql.query(locationQuery);
+  let response: LocationData[] = [];
+  rows.forEach((row: LocationData) => {
+    response.push({ location: row.location, visits: row.visits, type: locationRequest });
+  });
+
+  return response;
+};
+
 interface AnalyticData {
-  location: { location: string; visits: number }[];
+  location: { location: string; visits: number; type: string }[];
   dates: { date: string; visits: number }[];
   totalVisits: number;
+}
+
+interface LocationData {
+  location: string;
+  visits: number;
+  type: string | undefined;
 }
