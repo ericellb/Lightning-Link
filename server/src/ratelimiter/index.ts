@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, request } from 'express';
 import bluebird from 'bluebird';
 import redis from 'redis';
 
-let MAX_REQUESTS = 10;
+let MAX_REQUESTS = 30;
 let TIME_EXPIRE = 10000;
 let REDIS_IP = '127.0.0.1';
 let REDIS_PORT = 6379;
