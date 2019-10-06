@@ -2,20 +2,27 @@ import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
-import { AnalyticData } from './types';
+import { ChartData } from './types';
 
 const useStyles = makeStyles(theme => ({
   chartContainer: {
-    width: '100%',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexBasis: '80%',
+    paddingRight: '8px',
+    boxSizing: 'border-box'
+  },
+  analyticChart: {
+    background: 'whitesmoke',
+    borderRadius: '8px'
   }
 }));
 
 interface AnalyticChartProps {
-  analyticData: AnalyticData;
+  chartData: ChartData[];
 }
 
+// Plots Dates vs Views on a Chart.js Chart
 export default function AnalyticChart(props: AnalyticChartProps) {
   const classes = useStyles({});
   const analyticChartRef = useRef<HTMLCanvasElement>(null);
@@ -28,22 +35,29 @@ export default function AnalyticChart(props: AnalyticChartProps) {
     }
 
     // Labels and Data
-    let dateLabels: any = [];
-    let dateData: any = [];
+    let dateLabels: string[] = [];
+    let dateData: number[] = [];
+
+    // Sort our dates
+    let sortedDates = props.chartData.sort((a, b) => {
+      return +new Date(a.date) - +new Date(b.date);
+    });
 
     // Populate Date Labels
-    props.analyticData.dates.forEach(date => {
-      let tempDate = Object.keys(date)[0];
-      tempDate = moment(tempDate).format('MMMM Do YYYY');
+    sortedDates.forEach(entry => {
+      let tempDate = moment(entry.date).format('MMMM Do YYYY');
       dateLabels.push(tempDate);
     });
 
     // Populate Date Labels
-    props.analyticData.dates.forEach(date => {
-      dateData.push(Object.values(date));
+    sortedDates.forEach(entry => {
+      dateData.push(entry.visits);
     });
 
-    console.log(dateLabels);
+    if (dateLabels.length === 1) {
+      dateLabels.unshift('');
+      dateData.unshift(dateData[0]);
+    }
 
     // Create our chart
     new Chart(myChartRef as any, {
@@ -53,7 +67,7 @@ export default function AnalyticChart(props: AnalyticChartProps) {
         labels: dateLabels,
         datasets: [
           {
-            label: 'Views',
+            label: 'Total Views',
             data: dateData,
             fill: false,
             lineTension: 0,
@@ -74,7 +88,7 @@ export default function AnalyticChart(props: AnalyticChartProps) {
 
   return (
     <div className={classes.chartContainer}>
-      <canvas id="analyticChart" ref={analyticChartRef} />
+      <canvas id="analyticChart" ref={analyticChartRef} className={classes.analyticChart} />
     </div>
   );
 }
