@@ -135,7 +135,7 @@ export default function AuthModal(props: AuthModalProps) {
     // If creating account, change endpoint and method
     if (authType === 'Create Account') {
       endpointURL = `/user/create?${encodedURI}`;
-      axiosMethod = axios.post;
+      axiosMethod = axios.get;
     }
 
     // Create or login depending on authType

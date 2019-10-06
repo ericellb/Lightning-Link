@@ -18,7 +18,7 @@ if (process.env.ORIGIN_URL === 'http://localhost:3000') {
 // Expects -> userName
 // Expects -> userPass
 // Returns -> userId
-router.post('/user/create', async (req: Request, res: Response) => {
+router.get('/user/create', async (req: Request, res: Response) => {
   // Get query data from url
   let { userName, userPass } = req.query;
   let error = null;
